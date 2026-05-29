@@ -1,0 +1,199 @@
+/* ─── Info Banner ─── */
+.et-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px;
+  transition: all 0.2s;
+}
+
+.et-banner-icon {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.et-banner-text {
+  font-size: 14px;
+}
+
+.et-banner-dismiss {
+  font-weight: 700;
+  color: var(--blue);
+  background: white;
+  border: 1px solid var(--blue-10);
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.et-banner-dismiss:hover {
+  background: var(--blue-5);
+  transform: translateY(-1px);
+}
+
+/* ─── Table Header ─── */
+.et-table-header {
+  padding: 16px 24px 20px;
+}
+
+.et-table-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text-900);
+}
+
+.et-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-700);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.et-action-btn:hover { 
+  border-color: var(--blue-30); 
+  color: var(--blue);
+}
+
+.et-action-btn--primary {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+  box-shadow: 0 4px 12px var(--blue-20);
+}
+
+.et-action-btn--primary:hover { 
+  background: var(--blue-hover); 
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px var(--blue-30);
+}
+
+/* ─── Table ─── */
+.et-table-wrap {
+  overflow-x: auto;
+  padding: 0 8px;
+}
+
+.et-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.et-th {
+  text-align: left;
+  color: var(--text-500);
+  background: var(--bg-light);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  transition: all 0.2s;
+}
+
+.et-th:hover { 
+  background: var(--border-light);
+  color: var(--text-800);
+}
+
+.et-row {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.et-row:hover { 
+  background: var(--blue-5) !important;
+}
+
+.et-row--urgent {
+  background: rgba(239, 68, 68, 0.03);
+}
+
+.et-td {
+  vertical-align: middle;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.et-row:last-child .et-td {
+  border-bottom: none;
+}
+
+.et-urgent-dot {
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.15);
+}
+
+.et-patient-name {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: var(--text-900);
+}
+
+.et-patient-id {
+  font-size: 12px;
+  color: var(--text-400);
+}
+
+.et-room {
+  background: var(--bg-light);
+  border: 1px solid var(--border-light);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--text-700);
+}
+
+.et-row-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-light);
+  background: white;
+  color: var(--text-500);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.et-row-btn:hover { 
+  color: var(--blue); 
+  border-color: var(--blue-30);
+  background: var(--blue-5);
+  transform: scale(1.05);
+}
+
+/* ─── Bottom Stats ─── */
+.et-bottom-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+
+.et-stat {
+  display: flex;
+  align-items: center;
+  border-right: 1px solid var(--border-light);
+}
+
+@media (max-width: 768px) {
+  .et-stat {
+    border-right: none;
+    border-bottom: 1px solid var(--border-light);
+  }
+  .et-stat:last-child {
+    border-bottom: none;
+  }
+}
+
+.et-stat:last-child { border-right: none; }

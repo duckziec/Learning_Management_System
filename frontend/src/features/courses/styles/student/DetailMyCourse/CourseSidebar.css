@@ -1,0 +1,232 @@
+/* CourseSidebar Component Styles */
+
+.course-sidebar {
+  width: 100%;
+  border-left: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.dark .course-sidebar {
+  border-color: #334155;
+  background-color: rgba(15, 23, 42, 0.2);
+}
+
+@media (min-width: 1024px) {
+  .course-sidebar {
+    width: 24rem;
+    height: auto;
+  }
+}
+
+.course-sidebar__header {
+  padding: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background-color: #ffffff;
+}
+
+.dark .course-sidebar__header {
+  border-color: #334155;
+  background-color: var(--background-dark);
+}
+
+.course-sidebar__title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.dark .course-sidebar__title {
+  color: #ffffff;
+}
+
+.course-sidebar__progress {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.course-sidebar__progress-bar {
+  width: 100%;
+  height: 6px;
+  background-color: #e2e8f0;
+  border-radius: 3px;
+  flex: 1;
+  margin-right: 1rem;
+  overflow: hidden;
+}
+
+.dark .course-sidebar__progress-bar {
+  background-color: #334155;
+}
+
+.course-sidebar__progress-fill {
+  height: 100%;
+  background-color: var(--primary);
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.course-sidebar__progress-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.course-sidebar__content {
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 1rem;
+}
+
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 10px;
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+@media (min-width: 1024px) {
+  .course-sidebar__content {
+    max-height: calc(100vh - 4.5rem - 14rem);
+    min-height: 25rem;
+  }
+}
+
+/* Recursive Sidebar Items */
+.sidebar-item-wrapper {
+  position: relative;
+}
+
+.sidebar-item-wrapper.level-1 { padding-left: 12px; }
+.sidebar-item-wrapper.level-2 { padding-left: 24px; }
+.sidebar-item-wrapper.level-3 { padding-left: 36px; }
+
+.sidebar-item-row {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-left: 3px solid transparent;
+}
+
+.sidebar-item-row:hover {
+  background-color: #f8fafc;
+}
+
+.chapter-row {
+  background-color: rgba(248, 250, 252, 0.8);
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.chapter-row .sidebar-item-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: #0f172a;
+}
+
+.section-row {
+  color: #475569;
+}
+
+.active.sidebar-item-row {
+  background-color: rgba(28, 116, 233, 0.05);
+  border-left-color: var(--primary);
+}
+
+.sidebar-item-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+}
+
+.sidebar-item-info {
+  flex: 1;
+}
+
+.sidebar-item-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin: 0;
+  color: #1e293b;
+}
+
+.sidebar-item-title.completed {
+  color: var(--primary);
+  opacity: 0.8;
+}
+
+.sidebar-lesson-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.sidebar-lesson-meta span {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.sidebar-lesson-meta .material-symbols-outlined {
+  font-size: 14px;
+}
+
+.sidebar-folder-summary {
+  font-size: 11px;
+  color: #94a3b8;
+  margin-top: 2px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.sidebar-lesson-checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.toggle-icon {
+  color: #94a3b8;
+  font-size: 18px;
+}
+
+.sidebar-item-children {
+  background-color: #fff;
+}
+
+/* Custom Scrollbar for Sidebar */
+.course-sidebar__content {
+  flex: 1;
+  overflow-y: auto;
+  max-height: calc(100vh - 250px);
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #e2e8f0;
+  border-radius: 10px;
+}

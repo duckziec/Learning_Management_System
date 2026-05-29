@@ -12,7 +12,13 @@
       <list>
         <option value="$PROJECT_DIR$/Identity-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/Identity-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/identity-service/pom.xml" />
       </list>
+    </option>
+    <option name="ignoredFiles">
+      <set>
+        <option value="$PROJECT_DIR$/backend/Identity-service/pom.xml" />
+      </set>
     </option>
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
