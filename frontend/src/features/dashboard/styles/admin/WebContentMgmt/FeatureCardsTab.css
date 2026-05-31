@@ -1,0 +1,33 @@
+.web-content-cards-grid {
+  gap: 20px;
+}
+
+.web-content-card-editor {
+  margin-bottom: 0;
+}
+
+.web-content-card-icon {
+  color: var(--admin-accent);
+  margin-right: 8px;
+}
+
+.web-content-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.web-content-field-reset {
+  margin-bottom: 0;
+}
+
+.web-content-card-textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.web-content-card-save {
+  margin-top: 4px;
+  width: 100%;
+  justify-content: center;
+}

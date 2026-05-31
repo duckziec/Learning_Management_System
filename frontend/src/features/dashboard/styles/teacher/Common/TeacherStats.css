@@ -1,0 +1,68 @@
+.teacher-stats-premium {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stat-card-premium {
+  padding: 24px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+}
+
+.stat-main {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.icon-wrapper {
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.icon-wrapper.blue { background: #eff6ff; color: #3b82f6; }
+.icon-wrapper.green { background: #ecfdf5; color: #10b981; }
+.icon-wrapper.purple { background: #f5f3ff; color: #8b5cf6; }
+
+.stat-info {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64748b;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.stat-value-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.stat-loading {
+  opacity: 0.3;
+}
+
+@media (max-width: 640px) {
+  .teacher-stats-premium {
+    grid-template-columns: 1fr;
+  }
+}

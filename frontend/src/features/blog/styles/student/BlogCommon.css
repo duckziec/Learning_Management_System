@@ -1,0 +1,41 @@
+/* Shared Layout for Blog */
+.blog-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 20px;
+    font-family: 'Inter', sans-serif;
+    background-color: transparent;
+}
+
+.blog-main-grid {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 32px;
+    margin-top: 32px;
+}
+
+@media (max-width: 1024px) {
+    .blog-main-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Sidebar Components */
+.blog-sidebar-card {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+    border: 1px solid #f1f5f9;
+}
+
+.sidebar-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}

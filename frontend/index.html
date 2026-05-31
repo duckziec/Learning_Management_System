@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="icon" type="image/png" href="/public/LMS3.png"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>HVP LMS | Online Learning Platform</title>
+
+    <!--
+      Fix "white flash" lần đầu load:
+      Background được đặt inline (trước khi CSS bundle parse xong)
+      để trình duyệt KHÔNG vẽ nền trắng mặc định.
+    -->
+    <style>
+        html, body, #root {
+            margin: 0;
+            padding: 0;
+            background-color: #f6f7f8; /* = --bg-light */
+            min-height: 100vh;
+        }
+    </style>
+
+    <!-- Google Fonts: thêm &display=swap để không block render -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"/>
+</head>
+
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
