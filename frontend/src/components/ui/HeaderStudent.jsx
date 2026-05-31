@@ -1,41 +1,41 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, {useEffect, useRef, useState} from "react";
+import {Link, useLocation} from "react-router-dom";
 import "./styles/HeaderStudentFrom.css";
 import useAuth from "../../hooks/useAuth";
 
 const PUBLIC_LINKS = [
-    { label: "Trang chủ", href: "/" },
-    { label: "Khóa học", href: "/list-course" },
-    { label: "Bài viết", href: "/blog" },
-    { label: "Về chúng tôi", href: "/about-us" },
+    {label: "Trang chủ", href: "/"},
+    {label: "Khóa học", href: "/list-course"},
+    {label: "Bài viết", href: "/blog"},
+    {label: "Về chúng tôi", href: "/about-us"},
 ];
 
 const STUDENT_LINKS = [
-    { label: "Trang chủ", href: "/dashboard" },
-    { label: "Khóa học", href: "/list-course" },
-    { label: "Khóa học của tôi", href: "/my-courses" },
-    { label: "Bài tập", href: "/exercises" },
-    { label: "Bài viết", href: "/blog" },
+    {label: "Trang chủ", href: "/dashboard"},
+    {label: "Khóa học", href: "/list-course"},
+    {label: "Khóa học của tôi", href: "/my-courses"},
+    {label: "Bài tập", href: "/exercises"},
+    {label: "Bài viết", href: "/blog"},
 ];
 
 const INSTRUCTOR_LINKS = [
-    { label: "Trang chủ", href: "/instructor/home" },
-    { label: "Quản lý khóa học", href: "/manage/courses" },
-    { label: "Quản lý bài tập", href: "/instructor/exercises" },
-    { label: "Bài viết", href: "/instructor/blog" },
+    {label: "Trang chủ", href: "/instructor/home"},
+    {label: "Quản lý khóa học", href: "/manage/courses"},
+    {label: "Quản lý bài tập", href: "/instructor/exercises"},
+    {label: "Bài viết", href: "/instructor/blog"},
 ];
 
 const ADMIN_LINKS = [
-    { label: "Trang chủ", href: "/admin/home" },
-    { label: "Quản lý khóa học", href: "/manage/all-courses" },
-    { label: "Quản lý người dùng", href: "/manage/users" },
-    { label: "Bài viết", href: "/instructor/blog" },
-    { label: "Bài tập", href: "/instructor/exercises" },
+    {label: "Trang chủ", href: "/admin/home"},
+    {label: "Quản lý khóa học", href: "/manage/all-courses"},
+    {label: "Quản lý người dùng", href: "/manage/users"},
+    {label: "Bài viết", href: "/instructor/blog"},
+    {label: "Bài tập", href: "/instructor/exercises"},
 ];
 
 export default function Header() {
     const location = useLocation();
-    const { user, isAuthenticated, logout } = useAuth();
+    const {user, isAuthenticated, logout} = useAuth();
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [imgError, setImgError] = useState(false);
@@ -74,11 +74,11 @@ export default function Header() {
                 <div className="header__logo">
                     <div className="header__logo-icon">
                         <Link to={homeUrl}>
-                            <img src="/LMSicon.png" alt="LMSicon Logo" style={{ width: "60px", height: "50px" }} />
+                            <img src="/LMSicon.png" alt="LMSicon Logo" style={{width: "60px", height: "50px"}}/>
                         </Link>
                     </div>
                     <Link to={homeUrl}>
-                        <h2 className="header__title">EduLearn</h2>
+                        <h2 className="header__title">HVP Learning</h2>
                     </Link>
                 </div>
 
@@ -129,20 +129,20 @@ export default function Header() {
                             }}>
                                 {user?.avatarUrl && !imgError ? (
                                     <img src={user.avatarUrl} alt="Profile" referrerPolicy="no-referrer"
-                                        crossOrigin="anonymous" onError={() => setImgError(true)} style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            borderRadius: '50%',
-                                            objectFit: 'cover'
-                                        }} />
+                                         crossOrigin="anonymous" onError={() => setImgError(true)} style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        borderRadius: '50%',
+                                        objectFit: 'cover'
+                                    }}/>
                                 ) : (
                                     <span className="material-symbols-outlined"
-                                        style={{ fontSize: '1.2rem' }}>person</span>
+                                          style={{fontSize: '1.2rem'}}>person</span>
                                 )}
                             </div>
                             <span className="profile-name">{user?.fullname || user?.username || 'User'}</span>
                             <span className="material-symbols-outlined"
-                                style={{ fontSize: "1rem", color: "#94a3b8" }}>expand_more</span>
+                                  style={{fontSize: "1rem", color: "#94a3b8"}}>expand_more</span>
                         </div>
 
                         {/* Dropdown Menu */}
@@ -162,15 +162,15 @@ export default function Header() {
                                     }}>
                                         {user?.avatarUrl && !imgError ? (
                                             <img src={user.avatarUrl} alt="Profile" referrerPolicy="no-referrer"
-                                                crossOrigin="anonymous" onError={() => setImgError(true)} style={{
-                                                    width: '100%',
-                                                    height: '100%',
-                                                    borderRadius: '50%',
-                                                    objectFit: 'cover'
-                                                }} />
+                                                 crossOrigin="anonymous" onError={() => setImgError(true)} style={{
+                                                width: '100%',
+                                                height: '100%',
+                                                borderRadius: '50%',
+                                                objectFit: 'cover'
+                                            }}/>
                                         ) : (
                                             <span className="material-symbols-outlined"
-                                                style={{ fontSize: '1.5rem' }}>person</span>
+                                                  style={{fontSize: '1.5rem'}}>person</span>
                                         )}
                                     </div>
                                     <div className="profile-dropdown-header-info">
@@ -180,7 +180,7 @@ export default function Header() {
                                 </div>
                                 <div className="profile-dropdown-body">
                                     <Link to="/settings" className="profile-dropdown-item"
-                                        onClick={() => setIsDropdownOpen(false)}>Cài đặt</Link>
+                                          onClick={() => setIsDropdownOpen(false)}>Cài đặt</Link>
                                     <button
                                         className="profile-dropdown-item logout"
                                         onClick={() => {
