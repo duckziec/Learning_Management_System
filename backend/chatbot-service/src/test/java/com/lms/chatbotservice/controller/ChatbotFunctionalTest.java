@@ -2,6 +2,7 @@ package com.lms.chatbotservice.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lms.chatbotservice.configuration.SecurityConfig;
+import com.lms.chatbotservice.dto.request.ChatRequest;
 import com.lms.chatbotservice.dto.response.AnswerResponse;
 import com.lms.chatbotservice.dto.response.ChatMessageResponse;
 import com.lms.chatbotservice.dto.response.ChatSessionResponse;
@@ -17,6 +18,7 @@ import com.lms.chatbotservice.service.ChatService;
 import com.lms.chatbotservice.service.ChatSessionService;
 import com.lms.chatbotservice.service.GenerateService;
 import com.lms.chatbotservice.service.RateLimiterService;
+import com.lms.chatbotservice.support.TestSecurity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -25,21 +27,17 @@ import org.springframework.context.annotation.Import;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import reactor.core.publisher.Flux;
 
 import java.util.List;
 
-import static org.hamcrest.Matchers.containsString;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.asyncDispatch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = {ChatController.class, InternalController.class})
@@ -51,6 +49,9 @@ class ChatbotFunctionalTest {
 
     @Autowired
     ObjectMapper objectMapper;
+
+    @Autowired
+    ChatController chatController;
 
     @MockBean
     ChatService chatService;
@@ -104,22 +105,17 @@ class ChatbotFunctionalTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.questions[0].question").value("What is polymorphism?"));
 
-        MvcResult chat = mockMvc.perform(post("/chat")
-                        .headers(gatewayHeaders("student-1", "ROLE_STUDENT"))
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content("""
-                                {
-                                  "contextType": "GENERAL",
-                                  "message": "Explain polymorphism"
-                                }
-                                """))
-                .andExpect(request().asyncStarted())
-                .andReturn();
+        TestSecurity.authenticate("student-1", "ROLE_STUDENT");
+        List<String> chatChunks = chatController.chat(ChatRequest.builder()
+                        .contextType(ContextType.GENERAL)
+                        .message("Explain polymorphism")
+                        .build())
+                .collectList()
+                .block();
+        TestSecurity.clear();
 
-        mockMvc.perform(asyncDispatch(chat))
-                .andExpect(status().isOk())
-                .andExpect(content().string(containsString("[SESSION:session-1]")))
-                .andExpect(content().string(containsString("polymorphism")));
+        assertThat(chatChunks)
+                .contains("[SESSION:session-1]", "Study polymorphism with examples.");
 
         mockMvc.perform(get("/sessions")
                         .headers(gatewayHeaders("student-1", "ROLE_STUDENT")))
@@ -140,6 +136,7 @@ class ChatbotFunctionalTest {
 
         verify(rateLimiterService).checkAndIncrement("instructor-1", "ROLE_INSTRUCTOR");
         verify(rateLimiterService).checkAndIncrement("student-1", "ROLE_STUDENT");
+        verify(chatService).chat(any());
         verify(chatSessionService).archiveSessionByUser("session-1", "student-1");
     }
 

@@ -7,7 +7,11 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "test:coverage:core": "vitest run --coverage --coverage.skipFull --coverage.reporter=text --coverage.include=\"src/context/**/*.{js,jsx}\" --coverage.include=\"src/routes/PrivateRoute.jsx\" --coverage.include=\"src/routes/RoleRoute.jsx\" --coverage.include=\"src/services/api.client.js\" --coverage.include=\"src/services/deviceInfo.js\" --coverage.include=\"src/services/oauthUtils.js\" --coverage.include=\"src/hooks/useAuth.js\" --coverage.include=\"src/hooks/useFileUpload.js\" --coverage.include=\"src/hooks/useJudge0.js\" --coverage.include=\"src/components/ui/Toast.jsx\" --coverage.include=\"src/utils/**/*.{js,jsx}\" --coverage.include=\"src/features/assignment/quiz/utils/**/*.{js,jsx}\""
   },
   "dependencies": {
     "@codemirror/commands": "^6.10.3",
@@ -36,7 +40,13 @@
     "react-router-dom": "^6.22.3"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@testing-library/user-event": "^14.6.1",
     "@vitejs/plugin-react": "^4.2.1",
-    "vite": "^5.2.0"
+    "@vitest/coverage-v8": "^4.1.8",
+    "jsdom": "^29.1.1",
+    "vite": "^5.2.0",
+    "vitest": "^4.1.8"
   }
 }
