@@ -1,0 +1,92 @@
+server:
+  port: ${CHATBOT_SERVICE_PORT:8085}
+  servlet:
+    context-path: /chatbot
+
+spring:
+  application:
+    name: chatbot-service
+  main:
+    web-application-type: servlet
+  data:
+    mongodb:
+      uri: ${MONGO_URI:mongodb://localhost:27017/chatbot_db}
+    redis:
+      host: ${CHATBOT_REDIS_HOST:localhost}
+      port: ${CHATBOT_REDIS_PORT:6379}
+      password: ${CHATBOT_REDIS_PASSWORD:change-me}
+      timeout: ${CHATBOT_REDIS_TIMEOUT:2000ms}
+      lettuce:
+        pool:
+          max-active: ${CHATBOT_REDIS_POOL_MAX_ACTIVE:10}
+          max-idle: ${CHATBOT_REDIS_POOL_MAX_IDLE:5}
+          min-idle: ${CHATBOT_REDIS_POOL_MIN_IDLE:1}
+          max-wait: ${CHATBOT_REDIS_POOL_MAX_WAIT:1000ms}
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+    date-format: yyyy-MM-dd HH:mm:ss
+
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka}
+    fetch-registry: true
+    register-with-eureka: true
+  instance:
+    prefer-ip-address: true
+
+gemini:
+  api-key: ${GEMINI_API_KEY:}
+  model: ${GEMINI_MODEL:gemini-3-flash-preview}
+  base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta/models}
+  max-tokens: ${GEMINI_MAX_TOKENS:8192}
+  temperature-chat: ${GEMINI_TEMPERATURE_CHAT:0.7}
+  temperature-generate: ${GEMINI_TEMPERATURE_GENERATE:0.3}
+  max-retry: ${GEMINI_MAX_RETRY:3}
+  retry-backoff: ${GEMINI_RETRY_BACKOFF:5s}
+  stream-timeout: ${GEMINI_STREAM_TIMEOUT:30s}
+  generate-timeout: ${GEMINI_GENERATE_TIMEOUT:60s}
+  rate-limit:
+    student: ${GEMINI_RATE_LIMIT_STUDENT:50}
+    instructor: ${GEMINI_RATE_LIMIT_INSTRUCTOR:100}
+
+chatbot:
+  web-client:
+    max-in-memory-size-bytes: ${CHATBOT_WEBCLIENT_MAX_IN_MEMORY_SIZE_BYTES:2097152}
+  cache:
+    redis:
+      ttl-hours: ${CHATBOT_CACHE_TTL_HOURS:24}
+      max-messages: ${CHATBOT_CACHE_MAX_MESSAGES:20}
+  history:
+    recent-limit: ${CHATBOT_HISTORY_RECENT_LIMIT:20}
+    response-limit: ${CHATBOT_HISTORY_RESPONSE_LIMIT:20}
+  prompt:
+    max-history-tokens: ${CHATBOT_PROMPT_MAX_HISTORY_TOKENS:3000}
+    existing-test-cases-limit: ${CHATBOT_PROMPT_EXISTING_TEST_CASES_LIMIT:20}
+  generate:
+    json-parse-max-retry: ${CHATBOT_GENERATE_JSON_PARSE_MAX_RETRY:2}
+  session:
+    archive-cron: "${CHATBOT_SESSION_ARCHIVE_CRON:0 0 0 * * *}"
+    archive-after-days: ${CHATBOT_SESSION_ARCHIVE_AFTER_DAYS:30}
+    title-max-length: ${CHATBOT_SESSION_TITLE_MAX_LENGTH:50}
+
+services:
+  assignment-service:
+    url: ${ASSIGNMENT_SERVICE_URL:http://localhost:8083/assignment}
+  course-service:
+    url: ${COURSE_SERVICE_URL:http://localhost:8082/course}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.lms.chatbotservice: ${CHATBOT_LOG_LEVEL:DEBUG}
