@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="course-service" />
+        <module name="assignment-service" />
       </profile>
       <profile name="Annotation profile for lms-backend" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
