@@ -1,0 +1,134 @@
+.dashboard-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sidebar-card {
+  background: white;
+  border-radius: 20px;
+  border: 1px solid #f1f5f9;
+  padding: 24px;
+}
+
+.badge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.badge-item {
+  background: #f8fafc;
+  padding: 16px;
+  border-radius: 16px;
+  text-align: center;
+}
+
+.badge-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: white;
+}
+
+.badge-item span {
+  display: block;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.event-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.event-item {
+  display: flex;
+  gap: 16px;
+}
+
+.event-date {
+  width: 48px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.event-date .month {
+  font-size: 10px;
+  font-weight: 800;
+  color: #2563eb;
+  text-transform: uppercase;
+}
+
+.event-date .day {
+  font-size: 20px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+.event-details h5 {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 2px;
+}
+
+.event-details p {
+  font-size: 12px;
+  color: #64748b;
+}
+
+.event-item {
+  padding: 12px 0;
+  border-bottom: 1px solid #f1f5f9;   /* phân tách giữa các buổi */
+  transition: background 0.15s;
+  border-radius: 8px;
+  padding: 10px 8px;
+}
+
+.event-item:last-child {
+  border-bottom: none;   /* không có đường kẻ ở item cuối */
+}
+
+.event-item:hover {
+  background: #f8fafc;   /* highlight khi hover */
+}
+
+.event-item {
+  padding: 12px 8px;
+  border-bottom: 1px solid #f1f5f9;
+  display: flex;
+  flex-direction: column;   /* xếp info trên, nút bên dưới */
+  gap: 10px;
+}
+
+.event-item:last-child {
+  border-bottom: none;
+}
+
+.btn-join-event {
+  width: 100%;
+  padding: 8px;
+  border: none;
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+
+.btn-join-event:hover {
+  background: #dbeafe;
+}
+

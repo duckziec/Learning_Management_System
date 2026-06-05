@@ -1,0 +1,73 @@
+.web-content-quotes-grid {
+  gap: 20px;
+  align-items: start;
+}
+
+.web-content-quotes-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.web-content-slogan-input {
+  min-height: 70px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.web-content-quotes-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.web-content-quotes-heading {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.web-content-quote-card {
+  margin-bottom: 0;
+}
+
+.web-content-quote-card-body {
+  padding: 14px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.web-content-quote-text {
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--admin-text);
+}
+
+.web-content-quote-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.web-content-quote-author {
+  font-size: 0.78rem;
+  color: var(--admin-muted);
+  font-weight: 500;
+}
+
+.web-content-quote-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.web-content-quote-form-textarea {
+  min-height: 110px;
+}
+
+@media (max-width: 768px) {
+  .web-content-quote-footer {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

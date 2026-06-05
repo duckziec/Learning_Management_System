@@ -8,29 +8,29 @@
   /* === COLORS (ALIASING FOR UNIFICATION) === */
   --primary: #1c74e9;
   --color-primary: var(--primary);
-
+  
   --primary-hover: #155ecb;
   --color-primary-hover: var(--primary-hover);
-
+  
   --primary-shadow: rgba(28, 116, 233, 0.25);
   --color-primary-shadow: var(--primary-shadow);
 
   --bg-light: #f6f7f8;
   --color-bg-page: var(--bg-light);
-
+  
   --bg-white: #ffffff;
   --color-bg-white: var(--bg-white);
   --color-bg-input: var(--bg-white);
 
   --text-dark: #0f172a;
   --color-text-heading: var(--text-dark);
-
+  
   --text-body: #334155;
   --color-text-body: var(--text-body);
-
+  
   --text-muted: #64748b;
   --color-text-muted: var(--text-muted);
-
+  
   --text-label: #475569;
   --color-text-label: var(--text-label);
 

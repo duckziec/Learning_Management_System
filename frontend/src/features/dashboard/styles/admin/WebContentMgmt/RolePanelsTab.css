@@ -1,0 +1,62 @@
+.web-content-role-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.web-content-role-subtabs {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--admin-border);
+  padding-bottom: 12px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.web-content-role-grid {
+  gap: 20px;
+  align-items: start;
+}
+
+.web-content-role-card {
+  margin-bottom: 0;
+}
+
+.web-content-role-heading-icon {
+  color: var(--admin-accent);
+  margin-right: 8px;
+}
+
+.web-content-role-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.web-content-field-reset {
+  margin-bottom: 0;
+}
+
+.web-content-role-items-label {
+  margin-top: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.web-content-role-save-row {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.web-content-role-save-button {
+  padding: 12px 30px;
+  font-size: 1rem;
+}
+
+@media (max-width: 768px) {
+  .web-content-role-save-row {
+    grid-column: span 1;
+  }
+}
