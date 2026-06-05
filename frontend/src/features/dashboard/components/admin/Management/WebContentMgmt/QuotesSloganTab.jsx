@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../../../../styles/admin/WebContentMgmt/QuotesSloganTab.css';
 
 const DEFAULT_SLOGAN = 'Nền tảng Học tập & Đào tạo lập trình thế hệ mới';

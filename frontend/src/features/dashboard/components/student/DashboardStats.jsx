@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../styles/student/DashboardStats.css';
 
 export default function DashboardStats({ stats }) {

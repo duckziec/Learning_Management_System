@@ -1,4 +1,3 @@
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faUserPlus, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/teacher/EditCourse/editSettings.css';

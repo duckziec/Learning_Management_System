@@ -72,7 +72,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="Identity-service" options="-parameters" />
+      <module name="Identity-service" options="-parameters -Amapstruct.suppressGeneratorTimestamp=true -Amapstruct.defaultComponentModel=spring -Amapstruct.verbose=true" />
       <module name="api-gateway" options="-parameters" />
       <module name="assignment-service" options="-parameters" />
       <module name="blog-service" options="-parameters" />

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Link, useLocation, useParams, useSearchParams} from 'react-router-dom';
 import AnimatedPage from '../../../../../components/ui/AnimatedPage';
 import courseApi from '../../../../../services/course.api';

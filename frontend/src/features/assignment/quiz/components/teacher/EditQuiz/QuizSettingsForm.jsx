@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/teacher/ManualQuiz/quizSettingsForm.css';
 
 export default function QuizSettingsForm({settings, onChange}) {

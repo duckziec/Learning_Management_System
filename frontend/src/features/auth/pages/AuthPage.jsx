@@ -4,7 +4,7 @@
 // Đây là "page" duy nhất của flow này
 // ==================================
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import '../styles/AuthPage.css';
 import LoginForm from '../components/LoginForm';

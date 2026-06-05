@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../../../../styles/admin/WebContentMgmt/FeatureCardsTab.css';
 
 const DEFAULT_CARDS = [

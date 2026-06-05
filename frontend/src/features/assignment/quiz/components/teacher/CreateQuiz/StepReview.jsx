@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {createPendingQuestionImage, revokePendingQuestionImage,} from '../../../utils/questionImageUpload';
 import AssignmentMessageDialog from '../../../../shared/components/AssignmentMessageDialog';
 import '../../../styles/teacher/CreateQuiz/stepReview.css';

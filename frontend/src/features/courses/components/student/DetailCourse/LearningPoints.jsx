@@ -1,4 +1,3 @@
-import React from "react";
 import "../../../styles/student/DetailCourse/LearningPoints.css";
 
 export default function LearningPoints({ points = [] }) {

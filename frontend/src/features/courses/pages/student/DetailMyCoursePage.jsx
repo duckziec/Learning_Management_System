@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { courseApi } from '../../../../services/course.api';
 import { useToast } from '../../../../components/ui/Toast';

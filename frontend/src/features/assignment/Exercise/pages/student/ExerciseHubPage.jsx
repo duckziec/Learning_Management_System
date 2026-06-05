@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import {courseApi} from '../../../../../services/course.api';
 import {buildAppErrorState} from '../../../../../utils/appError';

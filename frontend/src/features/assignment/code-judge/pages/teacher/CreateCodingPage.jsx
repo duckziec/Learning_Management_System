@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { assignmentApi } from '../../../../../services/assignment.api';
 import courseApi from '../../../../../services/course.api';

@@ -1,4 +1,3 @@
-import React from 'react';
 import { useParams } from 'react-router-dom';
 import AnimatedPage from '../../../../../components/ui/AnimatedPage';
 import LockedFeature from '../../../../../components/ui/LockedFeature';

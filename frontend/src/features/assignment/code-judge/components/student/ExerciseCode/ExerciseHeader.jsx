@@ -1,5 +1,3 @@
-import React from 'react';
-
 const DIFFICULTY_CONFIG = {
   EASY: { label: 'Dễ', color: '#22c55e', bg: 'rgba(34, 197, 94, 0.1)' },
   MEDIUM: { label: 'Trung bình', color: '#f59e0b', bg: 'rgba(245, 158, 11, 0.1)' },

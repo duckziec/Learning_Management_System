@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import "../styles/AuthForm.css";
 import "../styles/RoleSelectionModal.css";
 import Logo from './Logo';

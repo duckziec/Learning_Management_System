@@ -6,8 +6,6 @@
 //   onTabChange: (tab) => void
 // ==================================
 
-import React from 'react';
-
 const TABS = [
     { key: 'login', label: 'Đăng Nhập' },
     { key: 'register', label: 'Đăng Ký' },

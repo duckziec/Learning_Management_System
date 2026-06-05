@@ -57,6 +57,10 @@
     .detail-course-page__main {
         min-width: 0;
     }
+
+    .detail-course-page__main > .ch-chapters-container:first-child {
+        margin-top: 4.75rem;
+    }
 }
 
 /* ── Skeleton loading ── */

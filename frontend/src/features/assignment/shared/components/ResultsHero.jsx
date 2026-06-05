@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/ResultsHero.css';
 
 function getResultMessage(score, userName) {

@@ -12,7 +12,7 @@
  * attempts a silent refresh using the refresh token.
  */
 
-import React, {createContext, useCallback, useState} from 'react';
+import {createContext, useCallback, useState} from 'react';
 import axios from 'axios';
 import {gatherDeviceInfo} from '../services/deviceInfo';
 import {ENDPOINTS} from '../constants/endpoints';

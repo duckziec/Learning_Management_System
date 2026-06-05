@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import AnimatedPage from '../../../components/ui/AnimatedPage';
 import { buildAppErrorState, getDefaultAppErrorFallbackPath } from '../../../utils/appError';

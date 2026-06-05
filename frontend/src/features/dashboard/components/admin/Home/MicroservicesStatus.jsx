@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import dashboardApi from '../../../../../services/dashboard.api';
 import { ADMIN_HEALTH_REFRESH_INTERVAL_MS } from '../../../../../configurations/env';
 

@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * PageLoader - Một component hiển thị spinner trung tâm
  * Thường dùng làm Suspense fallback cho các page lazy-load.

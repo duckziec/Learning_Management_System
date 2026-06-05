@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/teacher/PreviewImport/previewToolbar.css';
 
 export default function PreviewToolbar() {

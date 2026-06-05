@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import courseApi from '../../../../../services/course.api';
@@ -392,9 +392,7 @@ const CourseManagement = () => {
                       <Link
                         className="admin-btn"
                         style={{ padding: '5px 10px', fontSize: '0.75rem', textDecoration: 'none' }}
-                        to={`/list-course/detail-course/${course.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        to={`/admin/all-courses/${course.id}`}
                       >
                         <i className="ti ti-eye"></i>
                         Xem

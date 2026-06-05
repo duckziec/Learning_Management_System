@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link, useLocation, useSearchParams } from 'react-router-dom';
 import AnimatedPage from '../../../../../components/ui/AnimatedPage';
 import assignmentApi from '../../../../../services/assignment.api';

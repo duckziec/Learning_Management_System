@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../../styles/us/AboutCapabilities.css";
 
 const DEFAULT_ABOUT_ROLES = {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import AnimatedPage from "../../../../components/ui/AnimatedPage";
 import CourseHero from "../../components/student/DetailCourse/CourseHero";
@@ -57,7 +57,7 @@ function buildSections(nodes) {
     return buildTree(null);
 }
 
-export default function DetailCoursePage() {
+export default function DetailCoursePage({ adminPreview = false }) {
     const { courseId } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -70,6 +70,7 @@ export default function DetailCoursePage() {
     const [isEnrolled, setIsEnrolled] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [blockingError, setBlockingError] = useState(null);
+    const listPath = adminPreview ? "/admin/all-courses" : "/list-course";
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -82,7 +83,7 @@ export default function DetailCoursePage() {
                 message: "Liên kết khóa học không hợp lệ hoặc nội dung không còn tồn tại.",
                 variant: "not-found",
                 icon: "travel_explore",
-                fallbackPath: "/list-course",
+                fallbackPath: listPath,
             }));
             setIsLoading(false);
             return;
@@ -101,7 +102,7 @@ export default function DetailCoursePage() {
                         console.error("getStructure:", err?.response?.status, err?.response?.data);
                         return null;
                     }),
-                    isAuthenticated ? courseApi.getEnrolled().catch(() => []) : Promise.resolve([]),
+                    !adminPreview && isAuthenticated ? courseApi.getEnrolled().catch(() => []) : Promise.resolve([]),
                 ]);
 
                 const raw = courseRes?.data?.data ?? courseRes?.data;
@@ -119,7 +120,7 @@ export default function DetailCoursePage() {
                 console.error("Failed to fetch course detail:", err);
                 setBlockingError(buildAppErrorState(err, {
                     title: "Không thể tải thông tin khóa học",
-                    fallbackPath: "/list-course",
+                    fallbackPath: listPath,
                 }));
             } finally {
                 setIsLoading(false);
@@ -127,7 +128,7 @@ export default function DetailCoursePage() {
         };
 
         fetchAll();
-    }, [courseId, isAuthenticated]);
+    }, [adminPreview, courseId, isAuthenticated, listPath]);
 
     if (blockingError) {
         return <Navigate to={getAppErrorRoute(location.pathname)} replace state={blockingError} />;
@@ -177,7 +178,7 @@ export default function DetailCoursePage() {
     return (
         <AnimatedPage>
             <div className="detail-course-page">
-                <CourseHero course={courseData} />
+                <CourseHero course={courseData} hideBreadcrumb={adminPreview} />
 
                 <div className="detail-course-page__container">
                     <div className="detail-course-page__layout">
@@ -186,7 +187,7 @@ export default function DetailCoursePage() {
                             <ChaptersList
                                 chapters={sections}
                                 totalLessons={countLessonsInTree(sections)}
-                                onLessonClick={isEnrolled
+                                onLessonClick={!adminPreview && isEnrolled
                                     ? (lesson) => navigate("/course-hub", {
                                         state: {
                                             courseId,
@@ -206,6 +207,9 @@ export default function DetailCoursePage() {
                             course={courseData}
                             courseId={courseId}
                             isEnrolled={isEnrolled}
+                            previewMode={adminPreview}
+                            backPath={listPath}
+                            backLabel={adminPreview ? "Quay lại quản lý khóa học" : "Quay lại danh sách"}
                         />
                     </div>
                 </div>

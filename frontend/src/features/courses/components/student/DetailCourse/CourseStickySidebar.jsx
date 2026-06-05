@@ -1,10 +1,17 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { courseApi } from "../../../../../services/course.api";
 import useAuth from "../../../../../hooks/useAuth";
 import "../../../styles/student/DetailCourse/CourseStickySidebar.css";
 
-export default function CourseStickySidebar({ course, courseId, isEnrolled }) {
+export default function CourseStickySidebar({
+    course,
+    courseId,
+    isEnrolled,
+    previewMode = false,
+    backPath = "/list-course",
+    backLabel = "Quay lại danh sách",
+}) {
     const navigate = useNavigate();
     const location = useLocation();
     const { isAuthenticated } = useAuth();
@@ -96,7 +103,7 @@ export default function CourseStickySidebar({ course, courseId, isEnrolled }) {
                     )}
 
                     <div className="course-sidebar__actions">
-                        {isEnrolled ? (
+                        {!previewMode && (isEnrolled ? (
                             <button
                                 className="course-sidebar__btn course-sidebar__btn--primary"
                                 onClick={handleContinue}
@@ -112,16 +119,16 @@ export default function CourseStickySidebar({ course, courseId, isEnrolled }) {
                             >
                                 {enrolling ? "Đang đăng ký..." : "Đăng ký ngay"}
                             </button>
-                        )}
+                        ))}
                         <button
                             className="course-sidebar__btn course-sidebar__btn--secondary"
-                            onClick={() => navigate("/list-course")}
+                            onClick={() => navigate(backPath)}
                         >
-                            Quay lại danh sách
+                            {backLabel}
                         </button>
                     </div>
 
-                    {enrollError && (
+                    {!previewMode && enrollError && (
                         <p className="course-sidebar__error">{enrollError}</p>
                     )}
 
