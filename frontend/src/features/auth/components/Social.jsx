@@ -3,8 +3,6 @@
 // Button for Google sign-in
 // ==================================
 
-import React from 'react';
-
 // SVG Google icon with 4 colors
 function GoogleIcon() {
     return (

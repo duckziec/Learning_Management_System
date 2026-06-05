@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/admin/AdminTopbar/AdminTopbar.css';
 
 const AdminTopbar = ({title}) => {

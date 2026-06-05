@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import TeacherHero from '../../components/teacher/InstructorHome/TeacherHero';
 import TeacherStats from '../../components/teacher/Common/TeacherStats';

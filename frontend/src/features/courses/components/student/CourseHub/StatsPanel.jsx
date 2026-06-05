@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../../styles/CourseHub/StatsPanel.css';
 
 const CHART_ITEMS = [];

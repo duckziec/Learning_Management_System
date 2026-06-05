@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/teacher/CreateCoding/testCasesCard.css';
 
 export default function TestCasesCard({

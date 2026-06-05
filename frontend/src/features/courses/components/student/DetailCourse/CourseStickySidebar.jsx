@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from 'react';
 import { useLocation, useNavigate } from "react-router-dom";
 import { courseApi } from "../../../../../services/course.api";
 import useAuth from "../../../../../hooks/useAuth";

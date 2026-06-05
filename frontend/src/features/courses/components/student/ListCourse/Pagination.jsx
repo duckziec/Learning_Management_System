@@ -1,4 +1,3 @@
-import React from "react";
 import "../../../styles/student/ListCourse/Pagination.css";
 
 export default function Pagination({ currentPage, totalPages, onPageChange }) {

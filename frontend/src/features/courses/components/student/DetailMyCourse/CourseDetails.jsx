@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/student/DetailMyCourse/CourseDetails.css';
 
 const CourseDetails = ({ course }) => {

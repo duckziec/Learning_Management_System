@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/student/ExerciseHub/CourseOptionCard.css';
 
 const getCourseId = (course) => course?.id || course?.courseId;

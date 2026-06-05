@@ -1,4 +1,4 @@
-import React, {Suspense} from 'react';
+import {Suspense} from 'react';
 import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import AdminSidebar from '../../features/dashboard/components/admin/Shared/AdminSidebar';
 import AdminTopbar from '../../features/dashboard/components/admin/Shared/AdminTopbar';

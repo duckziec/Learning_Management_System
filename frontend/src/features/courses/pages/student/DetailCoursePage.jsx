@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import AnimatedPage from "../../../../components/ui/AnimatedPage";
 import CourseHero from "../../components/student/DetailCourse/CourseHero";

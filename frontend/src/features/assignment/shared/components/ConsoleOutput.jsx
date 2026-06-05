@@ -1,5 +1,3 @@
-import React from 'react';
-
 function getStatusLabel(status) {
   const labels = {
     AC: 'Passed',

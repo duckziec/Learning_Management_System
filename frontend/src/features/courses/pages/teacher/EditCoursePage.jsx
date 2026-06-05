@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 import {Link, Navigate, useLocation, useNavigate, useParams} from 'react-router-dom';
 import EditCourseSidebar from '../../components/teacher/EditCourse/EditCourseSidebar';
 import EditCourseInfo from '../../components/teacher/EditCourse/EditCourseInfo';

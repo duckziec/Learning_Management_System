@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../styles/student/ExerciseQuiz/QuizTimer.css';
 
 const QuizTimer = ({ timeLeft }) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import anhnhom from "../../../assets/images/anhnhom.png";
 import "../styles/HomeHero.css";

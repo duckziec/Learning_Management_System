@@ -1,4 +1,3 @@
-import React from 'react';
 import '../styles/RoleSelectionModal.css';
 
 function RoleSelector({ selectedRole, onSelect }) {

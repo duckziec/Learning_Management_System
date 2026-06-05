@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom';
 import { assignmentApi } from '../../../../../services/assignment.api';
 import courseApi from '../../../../../services/course.api';
@@ -13,7 +13,6 @@ import {
   revokePendingQuestionImage,
   uploadPendingQuestionImages,
 } from '../../utils/questionImageUpload';
-import { distributeQuizQuestionScores } from '../../utils/quizScoring';
 import '../../styles/teacher/CreateQuiz/createQuiz.css';
 
 const DEFAULT_SETTINGS = {
@@ -461,7 +460,7 @@ export default function CreateQuizPage() {
 
             <div className="stepper-container">
               {steps.map((step, index) => (
-                <React.Fragment key={step.num}>
+                <Fragment key={step.num}>
                   <div
                     className={`step-item ${currentStep >= step.num ? 'active' : ''} ${!canGoToStep(step.num) ? 'disabled' : ''}`}
                     onClick={() => {
@@ -477,7 +476,7 @@ export default function CreateQuizPage() {
                   {index < steps.length - 1 && (
                     <div className={`step-line ${currentStep > step.num ? 'active' : ''}`}></div>
                   )}
-                </React.Fragment>
+                </Fragment>
               ))}
             </div>
           </header>

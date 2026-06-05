@@ -1,4 +1,3 @@
-import React from 'react';
 import '../../../styles/teacher/CreateCoding/problemDetailsCard.css';
 
 export default function ProblemDetailsCard({ problemInfo, onUpdate }) {

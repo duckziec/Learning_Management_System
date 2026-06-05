@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faLightbulb, faPlus, faTrash, faSearch, faTimes, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/teacher/EditCourse/editCourseInfo.css';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const countComments = (comments = []) =>
   comments.reduce((total, comment) => total + 1 + countComments(comment.replies || []), 0);

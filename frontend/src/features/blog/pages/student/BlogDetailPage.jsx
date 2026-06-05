@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import blogApi from '../../../../services/blog.api';
 import { mapBlogComment, mapBlogPost, unwrapApiData, unwrapPageContent } from '../../../../utils/blogMappers';

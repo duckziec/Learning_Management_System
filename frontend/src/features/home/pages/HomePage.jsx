@@ -1,4 +1,3 @@
-import React from "react";
 import AnimatedPage from "../../../components/ui/AnimatedPage";
 import useRevealOnScroll from "../../../hooks/useRevealOnScroll";
 import HomeHero from "../components/HomeHero";

@@ -1,4 +1,3 @@
-import React from "react"
 import CourseCard from "../../../../../components/ui/CourseCard"
 import "../../../styles/student/ListCourse/CourseGrid.css";
 

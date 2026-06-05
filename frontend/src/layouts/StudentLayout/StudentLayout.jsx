@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import { Suspense } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import HeaderStudent from '../../components/ui/HeaderStudent';
 import FooterStudent from '../../components/ui/FooterStudent';
