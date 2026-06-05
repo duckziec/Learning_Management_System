@@ -3,7 +3,13 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function BlogCard({ post }) {
   const location = useLocation();
-  const basePath = location.pathname.startsWith('/instructor') ? '/instructor/blog' : '/blog';
+  const isAdminBlog = location.pathname.startsWith('/admin/blog');
+  const basePath = isAdminBlog
+    ? '/admin/blog'
+    : location.pathname.startsWith('/instructor')
+      ? '/instructor/blog'
+      : '/blog';
+  const detailParam = isAdminBlog ? post.id : (post.detailParam || post.id);
   return (
     <div className="blog-card">
       <div className="blog-card-image">
@@ -15,7 +21,7 @@ export default function BlogCard({ post }) {
           <span className="blog-date">{post.date}</span>
         </div>
         <h3 className="blog-card-title">
-          <Link to={`${basePath}/${post.detailParam || post.id}`}>{post.title}</Link>
+          <Link to={`${basePath}/${detailParam}`}>{post.title}</Link>
         </h3>
         <p className="blog-card-excerpt">{post.excerpt}</p>
         <div className="blog-card-author">

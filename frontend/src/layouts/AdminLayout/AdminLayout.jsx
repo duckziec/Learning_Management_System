@@ -15,9 +15,11 @@ function AdminLayout() {
         const path = location.pathname;
         if (path.includes('/admin/home')) return 'Dashboard Tổng quan';
         if (path.includes('/admin/users')) return 'Quản lý Người dùng';
+        if (path.match(/^\/admin\/all-courses\/[^/]+$/)) return 'Xem khóa học';
         if (path.includes('/admin/all-courses')) return 'Quản trị Khóa học';
         if (path.includes('/admin/web-content')) return 'Nội dung Website';
         if (path.includes('/admin/judge')) return 'Giám sát Code Judge';
+        if (path.match(/^\/admin\/blog\/[^/]+$/)) return 'Xem bài viết';
         if (path.includes('/admin/blog')) return 'Kiểm duyệt Diễn đàn';
         if (path.includes('/admin/settings')) return 'Cài đặt tài khoản';
         return 'Admin Panel';

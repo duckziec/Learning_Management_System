@@ -15,6 +15,7 @@ const CommentItem = ({
   onReplyChange,
   onReplySubmit,
   onCancelReply,
+  readOnly = false,
 }) => (
   <div className={`comment-item ${isReply ? 'reply' : ''}`}>
     <img
@@ -30,24 +31,26 @@ const CommentItem = ({
         <span className="comment-time">- {comment.time}</span>
       </div>
       <p className="comment-text">{comment.content}</p>
-      <div className="comment-actions">
-        {!isReply && (
-          <button
-            className="comment-action-btn"
-            type="button"
-            onClick={() => {
-              if (!isAuthenticated) {
-                onAuthRequired?.();
-                return;
-              }
-              onReplyClick(comment.id);
-            }}
-          >
-            Trả lời
-          </button>
-        )}
-        <button className="comment-action-btn" type="button">Báo cáo</button>
-      </div>
+      {!readOnly && (
+        <div className="comment-actions">
+          {!isReply && (
+            <button
+              className="comment-action-btn"
+              type="button"
+              onClick={() => {
+                if (!isAuthenticated) {
+                  onAuthRequired?.();
+                  return;
+                }
+                onReplyClick(comment.id);
+              }}
+            >
+              Trả lời
+            </button>
+          )}
+          <button className="comment-action-btn" type="button">Báo cáo</button>
+        </div>
+      )}
 
       {activeReplyId === comment.id && (
         <form className="comment-reply-form" onSubmit={event => onReplySubmit(event, comment.id)}>
@@ -85,6 +88,7 @@ const CommentItem = ({
               onReplyChange={onReplyChange}
               onReplySubmit={onReplySubmit}
               onCancelReply={onCancelReply}
+              readOnly={readOnly}
             />
           ))}
         </div>
@@ -101,6 +105,7 @@ export default function CommentSection({
   onSubmit,
   submitting = false,
   error = '',
+  readOnly = false,
 }) {
   const [content, setContent] = useState('');
   const [activeReplyId, setActiveReplyId] = useState(null);
@@ -156,36 +161,38 @@ export default function CommentSection({
         Bình luận ({countComments(comments)})
       </h3>
 
-      <form className="comment-input-area" onSubmit={handleSubmit}>
-        {inputAvatar ? (
-          <img
-            src={inputAvatar}
-            alt={inputName}
-            className="comment-input-avatar"
-            referrerPolicy="no-referrer"
-          />
-        ) : (
-          <span className="comment-input-avatar comment-input-placeholder material-symbols-outlined">person</span>
-        )}
-        <div className="comment-input-box">
-          <textarea
-            placeholder="Viết bình luận..."
-            className="comment-textarea"
-            value={content}
-            onChange={event => setContent(event.target.value)}
-            onFocus={() => {
-              if (!isAuthenticated) onAuthRequired?.();
-            }}
-            disabled={submitting}
-          />
-          <div className="comment-form-actions">
-            {error && <span className="comment-error">{error}</span>}
-            <button className="post-comment-btn" type="submit" disabled={submitting || !content.trim()}>
-              {submitting ? 'Đang gửi...' : 'Đăng bình luận'}
-            </button>
+      {!readOnly && (
+        <form className="comment-input-area" onSubmit={handleSubmit}>
+          {inputAvatar ? (
+            <img
+              src={inputAvatar}
+              alt={inputName}
+              className="comment-input-avatar"
+              referrerPolicy="no-referrer"
+            />
+          ) : (
+            <span className="comment-input-avatar comment-input-placeholder material-symbols-outlined">person</span>
+          )}
+          <div className="comment-input-box">
+            <textarea
+              placeholder="Viết bình luận..."
+              className="comment-textarea"
+              value={content}
+              onChange={event => setContent(event.target.value)}
+              onFocus={() => {
+                if (!isAuthenticated) onAuthRequired?.();
+              }}
+              disabled={submitting}
+            />
+            <div className="comment-form-actions">
+              {error && <span className="comment-error">{error}</span>}
+              <button className="post-comment-btn" type="submit" disabled={submitting || !content.trim()}>
+                {submitting ? 'Đang gửi...' : 'Đăng bình luận'}
+              </button>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      )}
 
       <div className="comments-list">
         {comments.length > 0 ? (
@@ -202,10 +209,13 @@ export default function CommentSection({
               onReplyChange={setReplyContent}
               onReplySubmit={handleReplySubmit}
               onCancelReply={() => setActiveReplyId(null)}
+              readOnly={readOnly}
             />
           ))
         ) : (
-          <div className="blog-empty-state">Chưa có bình luận nào. Hãy là người đầu tiên phản hồi bài viết này.</div>
+          <div className="blog-empty-state">
+            {readOnly ? 'Chưa có bình luận nào.' : 'Chưa có bình luận nào. Hãy là người đầu tiên phản hồi bài viết này.'}
+          </div>
         )}
       </div>
     </div>

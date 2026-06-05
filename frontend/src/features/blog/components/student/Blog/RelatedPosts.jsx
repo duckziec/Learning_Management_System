@@ -4,7 +4,11 @@ import BlogCard from './BlogCard';
 
 export default function RelatedPosts({ posts }) {
   const location = useLocation();
-  const basePath = location.pathname.startsWith('/instructor') ? '/instructor/blog' : '/blog';
+  const basePath = location.pathname.startsWith('/admin/blog')
+    ? '/admin/blog'
+    : location.pathname.startsWith('/instructor')
+      ? '/instructor/blog'
+      : '/blog';
 
   if (!posts.length) return null;
 
