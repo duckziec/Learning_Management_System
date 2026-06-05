@@ -75,3 +75,5 @@ AGENTS.md
 
 google-service-account.json
 /minio_data/
+/test-backend-services.ps1
+/test-backend-services.cmd

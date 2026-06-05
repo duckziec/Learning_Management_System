@@ -86,9 +86,9 @@ public class SecurityConfig {
                                             FilterChain filterChain)
                     throws ServletException, IOException {
 
-                String path = request.getServletPath();
+                String path = getRequestPath(request);
 
-                if (isPublicPath(path) || isPublicGetPath(request)) {
+                if (isPublicPath(path) || isPublicGetPath(request, path)) {
                     filterChain.doFilter(request, response);
                     return;
                 }
@@ -127,10 +127,18 @@ public class SecurityConfig {
                 return false;
             }
 
-            private boolean isPublicGetPath(HttpServletRequest request) {
+            private String getRequestPath(HttpServletRequest request) {
+                String path = request.getRequestURI();
+                String contextPath = request.getContextPath();
+                if (contextPath != null && !contextPath.isBlank() && path.startsWith(contextPath)) {
+                    path = path.substring(contextPath.length());
+                }
+                return path;
+            }
+
+            private boolean isPublicGetPath(HttpServletRequest request, String path) {
                 if (!HttpMethod.GET.name().equals(request.getMethod())) return false;
 
-                String path = request.getServletPath();
                 return path.equals("/categories")
                         || path.equals("/courses")
                         || path.matches("^/courses/(?!my$|enrolled$|users$)[^/]+$")

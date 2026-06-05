@@ -107,7 +107,11 @@ public class SecurityConfig {
                                             FilterChain filterChain)
                     throws ServletException, IOException {
 
-                String path = request.getServletPath();
+                String path = request.getRequestURI();
+                String contextPath = request.getContextPath();
+                if (contextPath != null && !contextPath.isBlank() && path.startsWith(contextPath)) {
+                    path = path.substring(contextPath.length());
+                }
 
                 // bỏ qua cho public endpoint vs internal endpoint
                 if (isPublicPath(path)) {

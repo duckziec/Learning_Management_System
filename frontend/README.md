@@ -1,118 +1,73 @@
-src/features/
-│
-├── aboutus/
-│   ├── components/          ← (chờ bổ sung)
-│   └── pages/
-│       └── AboutUsPage.jsx
-│
-├── auth/
-│   ├── components/
-│   │   ├── LoginForm.jsx       ← form đăng nhập có validation
-│   │   ├── RegisterForm.jsx    ← form đăng ký có kiểm tra mật khẩu
-│   │   └── ProfileCard.jsx     ← hiển thị avatar, role badge
-│   └── pages/
-│       ├── LoginPage.jsx
-│       ├── RegisterPage.jsx
-│       └── ProfilePage.jsx
-│
-├── courses/
-│   ├── components/
-│   │   ├── CourseCard.jsx      ← card thumbnail, level badge
-│   │   ├── LessonTree.jsx      ← tree-view có collapsible sections
-│   │   └── CourseFilter.jsx    ← search + filter theo level
-│   └── pages/
-│       ├── CoursesPage.jsx
-│       └── CourseDetailPage.jsx
-│
-├── assignment/
-│   ├── code-judge/
-│   │   ├── components/
-│   │   │   ├── LanguageSelector.jsx  ← dropdown 47 ngôn ngữ Judge0
-│   │   │   ├── TestcasePanel.jsx     ← collapsible input/expected/actual
-│   │   │   └── SubmissionLog.jsx     ← log màu sắc theo từng trạng thái
-│   │   └── pages/
-│   │       └── CodeJudgePage.jsx
-│   └── quiz/
-│       ├── components/
-│       │   ├── QuizTimer.jsx         ← đếm ngược, cảnh báo 60 giây cuối
-│       │   └── QuestionCard.jsx      ← single/multiple choice
-│       └── pages/
-│           └── QuizPage.jsx
-│
-├── blog/
-│   ├── components/
-│   │   ├── PostCard.jsx        ← upvote/downvote/comment count
-│   │   ├── CommentSection.jsx  ← form + danh sách comment
-│   │   └── VoteBar.jsx         ← upvote/downvote với active state
-│   └── pages/
-│       ├── BlogListPage.jsx
-│       └── BlogDetailPage.jsx
-│
-└── management/
-    ├── course-management/
-    │   ├── components/
-    │   │   ├── DataTable.jsx       ← bảng chung với custom renderers
-    │   │   └── CourseForm.jsx      ← form tạo/sửa khóa học
-    │   └── pages/
-    │       └── CourseManagementPage.jsx
-    ├── assignment-management/
-    │   ├── components/             ← (chờ bổ sung)
-    │   └── pages/
-    │       └── AssignmentManagementPage.jsx
-    └── user-management/
-        ├── components/
-        │   └── UserTable.jsx       ← đổi role inline, khóa/kích hoạt tài khoản
-        └── pages/
-            └── UserManagementPage.jsx
+# EduLearn Frontend
 
+Frontend của Learning Management System, xây dựng bằng React 18, Vite, React Router, Axios và Vitest.
 
-edulearn-frontend/
-├── public/
-│   └── fonts/
-├── src/
-│   ├── App.jsx                          ← Root app wiring AppRoutes
-│   ├── assets/
-│   │   ├── images/
-│   │   └── fonts/
-│   ├── components/
-│   │   ├── ui/                          ← Button, Badge, Card (Atomic Design)
-│   │   ├── media/                       ← React Player, PDF, Slide Viewer
-│   │   ├── editor/                      ← Monaco Editor
-│   │   └── common/                      ← Navbar, Sidebar, Footer
-│   ├── constants/
-│   │   ├── endpoints.js                 ← Gateway URLs đầy đủ cho mọi service
-│   │   ├── roles.js                     ← ADMIN/INSTRUCTOR/STUDENT + permission matrix
-│   │   └── languages.js                 ← 47 ngôn ngữ Judge0 (có thể mở rộng)
-│   ├── features/
-│   │   ├── aboutus/AboutUs.jsx
-│   │   ├── auth/                        ← Login, Register, Profile
-│   │   ├── courses/                     ← Courses, CourseDetail
-│   │   ├── assignment/
-│   │   │   ├── code-judge/CodeJudge.jsx
-│   │   │   └── quiz/Quiz.jsx
-│   │   ├── blog/                        ← BlogList, BlogDetail
-│   │   └── management/
-│   │       ├── course-management/
-│   │       ├── assignment-management/
-│   │       └── user-management/
-│   ├── hooks/
-│   │   ├── useAuth.js                   ← JWT + RBAC (hasRole, isAdmin...)
-│   │   ├── useFileUpload.js             ← MinIO presigned URL upload
-│   │   └── useJudge0.js                 ← Submit code + polling result
-│   ├── services/
-│   │   ├── api.client.js                ← Axios + auto token refresh interceptor
-│   │   ├── identity.api.js
-│   │   ├── course.api.js
-│   │   ├── assignment.api.js
-│   │   └── blog.api.js
-│   ├── layouts/
-│   │   ├── AuthLayout/AuthLayout.jsx
-│   │   ├── StudentLayout/StudentLayout.jsx
-│   │   ├── InstructorLayout/InstructorLayout.jsx
-│   │   └── AdminLayout/AdminLayout.jsx
-│   └── routes/
-│       ├── AppRoutes.js                 ← Lazy-load + route groups theo role
-│       ├── PrivateRoute.js              ← Yêu cầu đăng nhập
-│       ├── RoleRoute.js                 ← Kiểm soát truy cập theo role
-│       └── FallbackRoute.js             ← Redirect theo role sau login
-└── README.md
+## Scripts
+
+```powershell
+npm install
+npm run dev
+npm run build
+npm test
+npm run test:coverage
+npm run test:coverage:core
+```
+
+| Script | Mục đích |
+|---|---|
+| `npm run dev` | Chạy Vite dev server |
+| `npm run build` | Build production |
+| `npm test` | Chạy toàn bộ test frontend bằng Vitest |
+| `npm run test:coverage` | Chạy coverage theo cấu hình chung |
+| `npm run test:coverage:core` | Chạy coverage gọn cho core frontend logic, dùng cho báo cáo |
+
+## Testing
+
+Bộ test hiện tại:
+
+```text
+Test Files  19 passed (19)
+Tests       146 passed (146)
+```
+
+Coverage core logic:
+
+```text
+Statements : 94.85%
+Branches   : 82.58%
+Functions  : 97.97%
+Lines      : 96.73%
+```
+
+Các nhóm đã có test:
+
+- Utilities và mappers: app error, assignment mapper, blog mapper, course order, course slug, date/time, formatter, quiz scoring.
+- Auth và routing: `AuthContext`, `PrivateRoute`, `RoleRoute`.
+- Services: `api.client` interceptor, `deviceInfo`, `oauthUtils`.
+- Hooks: `useFileUpload`, `useJudge0`.
+- UI dùng chung: `ToastProvider` và `useToast`.
+
+Test chạy trong `jsdom`, mock axios/apiClient/fetch/storage/browser API nên không cần backend hoặc dịch vụ ngoài.
+
+## Source Layout
+
+```text
+src/
+  components/ui/        Shared UI components
+  configurations/       Env and OAuth config
+  constants/            API endpoints, roles, languages
+  context/              AuthContext
+  features/             Feature modules: auth, courses, assignment, blog, dashboard
+  hooks/                Shared React hooks
+  layouts/              Auth/Student/Instructor/Admin layouts
+  routes/               AppRoutes, PrivateRoute, RoleRoute
+  services/             API clients and browser/network services
+  test/                 Vitest test suite
+  utils/                Shared pure utilities and mappers
+```
+
+## Notes
+
+- `test:coverage:core` intentionally focuses on core logic so the report is readable and not diluted by large page-level UI files.
+- `ENDPOINTS.JUDGE0` is available for the `useJudge0` hook's submit/result polling flow.
+- Frontend tests do not perform real login, upload, OAuth redirect, MinIO upload or Judge0 execution.
