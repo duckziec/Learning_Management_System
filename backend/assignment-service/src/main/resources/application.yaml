@@ -4,7 +4,7 @@ spring:
   datasource:
     url: ${ASSIGNMENT_DB_URL:jdbc:mysql://localhost:3306/assignment_lms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true}
     username: ${ASSIGNMENT_DB_USERNAME:root}
-    password: ${ASSIGNMENT_DB_PASSWORD:change-me}
+    password: ${ASSIGNMENT_DB_PASSWORD:mysqladmin123}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       idle-timeout: 300000
@@ -42,7 +42,7 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      password: ${REDIS_PASSWORD:change-me}
+      password: ${REDIS_PASSWORD:redisadmin123}
       timeout: ${REDIS_TIMEOUT:2s}
     web:
       pageable:
@@ -51,7 +51,7 @@ spring:
         max-page-size: 100
 
     mongodb:
-      uri: ${ASSIGNMENT_MONGODB_URI:mongodb://localhost:27017/assignment_lms_mongo}
+      uri: ${ASSIGNMENT_MONGODB_URI:mongodb://mongoadmin:mongoadmin123@localhost:27017/assignment_lms_mongo?authSource=admin}
       web:
         pageable:
           one-indexed-parameters: false
@@ -92,7 +92,7 @@ judge:
 
   judge0:
     base-url: ${JUDGE0_URL:http://localhost:2358}
-    api-key: ${JUDGE0_API_KEY:}
+    api-key: ${JUDGE0_API_KEY:your-api-key}
     max-poll-attempts: ${JUDGE0_MAX_POLL_ATTEMPTS:30}
     poll-interval-ms: ${JUDGE0_POLL_INTERVAL_MS:2000}
 
@@ -155,9 +155,9 @@ management:
 # ===== MinIO =====
 minio:
   url: ${MINIO_URL:http://localhost:9000}
-  public-url: ${MINIO_PUBLIC_URL:${MINIO_URL:http://localhost:9000}}
-  access-key: ${MINIO_ACCESS_KEY:change-me}
-  secret-key: ${MINIO_SECRET_KEY:change-me}
+  public-url: ${MINIO_PUBLIC_URL:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin123}
   bucket-name: ${MINIO_ASSIGNMENT_BUCKET:lms-assignment-bucket}
   max-file-size-bytes: ${MINIO_ASSIGNMENT_MAX_FILE_SIZE_BYTES:5242880}
   presigned-expiry-minutes: ${MINIO_ASSIGNMENT_PRESIGNED_EXPIRY_MINUTES:5}

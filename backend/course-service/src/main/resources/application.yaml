@@ -9,7 +9,7 @@ spring:
   datasource:
     url: ${COURSE_DB_URL:jdbc:mysql://localhost:3306/course_lms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true}
     username: ${COURSE_DB_USERNAME:root}
-    password: ${COURSE_DB_PASSWORD:}
+    password: ${COURSE_DB_PASSWORD:mysqladmin123}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: CourseHikariPool
@@ -49,7 +49,7 @@ spring:
 
   data:
     mongodb:
-      uri: ${COURSE_MONGODB_URI:mongodb://localhost:27017/course_lms_mongo}
+      uri: ${COURSE_MONGODB_URI:mongodb://mongoadmin:mongoadmin123@localhost:27017/course_lms_mongo?authSource=admin}
 
 # ===== Eureka =====
 eureka:
@@ -93,7 +93,7 @@ management:
 
 minio:
   url: ${MINIO_URL:http://localhost:9000}
-  public-url: ${MINIO_PUBLIC_URL:${MINIO_URL:http://localhost:9000}}
+  public-url: ${MINIO_PUBLIC_URL:http://localhost:9000}
   region: ${MINIO_REGION:us-east-1}
   access-key: ${MINIO_ACCESS_KEY:minioadmin}
   secret-key: ${MINIO_SECRET_KEY:minioadmin123}

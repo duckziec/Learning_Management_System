@@ -30,7 +30,7 @@ pom.xml.next
 application-local.yml
 application-local.properties
 .env
-.env.*
+.env.prod
 
 # ==============================
 # NODE / REACT
@@ -74,3 +74,4 @@ replacements.txt
 AGENTS.md
 
 google-service-account.json
+/minio_data/

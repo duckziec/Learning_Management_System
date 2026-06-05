@@ -9,7 +9,7 @@ spring:
   datasource:
     url: ${BLOG_DB_URL:jdbc:mysql://localhost:3306/blog_lms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true}
     username: ${BLOG_DB_USERNAME:root}
-    password: ${BLOG_DB_PASSWORD:change-me}
+    password: ${BLOG_DB_PASSWORD:mysqladmin123}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: BlogHikariPool
@@ -58,9 +58,9 @@ services:
 
 minio:
   url: ${MINIO_URL:http://localhost:9000}
-  public-url: ${MINIO_PUBLIC_URL:${MINIO_URL:http://localhost:9000}}
-  access-key: ${MINIO_ACCESS_KEY:change-me}
-  secret-key: ${MINIO_SECRET_KEY:change-me}
+  public-url: ${MINIO_PUBLIC_URL:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin123}
   bucket-name: ${MINIO_BLOG_BUCKET:lms-blog-bucket}
   max-file-size-bytes: ${MINIO_BLOG_MAX_FILE_SIZE_BYTES:5242880}
   public-read-enabled: ${MINIO_BLOG_PUBLIC_READ_ENABLED:true}

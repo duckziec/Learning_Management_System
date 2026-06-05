@@ -6,16 +6,16 @@ app:
 
 # ===== JWT Config =====
 jwt:
-  signer-key: ${JWT_SIGNER_KEY:1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij}
+  signer-key: ${JWT_SIGNER_KEY:3fb729ab82e9422b00d6d6fba8a767b3e44f330853fd68673f7dbfd826abf1fa}
 
 spring:
   application:
     name: api-gateway
   data:
     redis:
-      host: ${REDIS_HOST:redis-17905.crce264.ap-east-1-1.ec2.cloud.redislabs.com}
-      port: ${REDIS_PORT:17905}
-      password: ${REDIS_PASSWORD:s9ZhlgjxEKXwN923LO6HPIEm8DsFttXW}
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:redisadmin123}
       timeout: ${REDIS_TIMEOUT:2s}
   cloud:
     gateway:
