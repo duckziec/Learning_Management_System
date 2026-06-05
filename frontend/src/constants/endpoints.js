@@ -149,6 +149,12 @@ export const ENDPOINTS = {
         ARCHIVE_SESSION: (sessionId) => `${BASE_URL}/api/chatbot/sessions/${sessionId}/archive`,
     },
 
+    // Judge0 proxy
+    JUDGE0: {
+        SUBMIT: `${BASE_URL}/api/assignment/judge0/submissions`,
+        RESULT: (token) => `${BASE_URL}/api/assignment/judge0/submissions/${token}`,
+    },
+
     // Admin Dashboard
     ADMIN: {
         USERS: `${BASE_URL}/api/identity/admin/users`,

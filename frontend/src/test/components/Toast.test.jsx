@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderToString } from 'react-dom/server';
 import React from 'react';
@@ -37,6 +37,15 @@ function ToastTrigger() {
         Show Confirm
       </button>
     </div>
+  );
+}
+
+function ConfirmTrigger({ onConfirm }) {
+  const toast = useToast();
+  return (
+    <button data-testid="btn-confirm-controlled" onClick={() => toast.confirm('Confirm controlled?', onConfirm, { confirmLabel: 'Yes', cancelLabel: 'No' })}>
+      Show Confirm
+    </button>
   );
 }
 
@@ -83,5 +92,66 @@ describe('ToastProvider and useToast', () => {
     expect(screen.getByText('Confirm?')).toBeInTheDocument();
     expect(screen.getByText('Yes')).toBeInTheDocument();
     expect(screen.getByText('No')).toBeInTheDocument();
+  });
+
+  it('removes toast when close button is clicked', async () => {
+    const { container } = renderToast();
+    const user = userEvent.setup();
+
+    await user.click(screen.getByTestId('btn-success'));
+    await user.click(container.querySelector('.toast-close'));
+
+    await waitFor(() => {
+      expect(screen.queryByText('Success msg')).not.toBeInTheDocument();
+    });
+  });
+
+  it('auto removes regular toasts after the duration', async () => {
+    vi.useFakeTimers();
+    try {
+      renderToast();
+
+      fireEvent.click(screen.getByTestId('btn-info'));
+      expect(screen.getByText('Info msg')).toBeInTheDocument();
+
+      act(() => {
+        vi.advanceTimersByTime(4260);
+      });
+
+      expect(screen.queryByText('Info msg')).not.toBeInTheDocument();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it('runs confirm callback when confirm action is clicked', async () => {
+    const onConfirm = vi.fn();
+    render(
+      <ToastProvider>
+        <ConfirmTrigger onConfirm={onConfirm} />
+      </ToastProvider>
+    );
+
+    fireEvent.click(screen.getByTestId('btn-confirm-controlled'));
+    fireEvent.click(screen.getByText('Yes'));
+
+    expect(onConfirm).toHaveBeenCalledTimes(1);
+  });
+
+  it('dismisses confirm toast without callback when cancel action is clicked', async () => {
+    const onConfirm = vi.fn();
+    render(
+      <ToastProvider>
+        <ConfirmTrigger onConfirm={onConfirm} />
+      </ToastProvider>
+    );
+
+    fireEvent.click(screen.getByTestId('btn-confirm-controlled'));
+    fireEvent.click(screen.getByText('No'));
+
+    expect(onConfirm).not.toHaveBeenCalled();
+    await waitFor(() => {
+      expect(screen.queryByText('Confirm controlled?')).not.toBeInTheDocument();
+    });
   });
 });

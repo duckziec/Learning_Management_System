@@ -23,8 +23,8 @@
         <module>identity-service</module>
         <module>course-service</module>
         <module>assignment-service</module>
-<!--        <module>blog-service</module>-->
-<!--        <module>chatbot-service</module>-->
+        <module>blog-service</module>
+        <module>chatbot-service</module>
     </modules>
 
     <properties>

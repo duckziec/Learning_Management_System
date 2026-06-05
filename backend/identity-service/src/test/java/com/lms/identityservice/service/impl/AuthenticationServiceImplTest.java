@@ -31,7 +31,6 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Optional;
 
@@ -108,7 +107,7 @@ class AuthenticationServiceImplTest {
         assertThat(storedToken.getTokenHash()).isNotEqualTo(response.getRefreshToken());
         assertThat(storedToken.getIpAddress()).isEqualTo("127.0.0.1");
         assertThat(storedToken.getDeviceInfo()).isEqualTo("JUnit");
-        verify(userRepository).updateLastLoginTime(anyString(), any(LocalDateTime.class));
+        verify(userRepository).updateLastLoginTime(anyString(), any(Instant.class));
     }
 
     @Test

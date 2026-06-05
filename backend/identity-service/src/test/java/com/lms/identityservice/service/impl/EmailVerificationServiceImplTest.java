@@ -1,5 +1,6 @@
 package com.lms.identityservice.service.impl;
 
+import com.lms.identityservice.configuration.GatewayAuthentication;
 import com.lms.identityservice.dto.request.VerifyEmailRequest;
 import com.lms.identityservice.entity.EmailVerification;
 import com.lms.identityservice.entity.User;
@@ -10,15 +11,18 @@ import com.lms.identityservice.repository.EmailVerificationRepository;
 import com.lms.identityservice.repository.UserRepository;
 import com.lms.identityservice.service.EmailService;
 import com.lms.identityservice.service.OtpAttemptHandler;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -58,6 +62,13 @@ class EmailVerificationServiceImplTest {
                 passwordEncoder);
         ReflectionTestUtils.setField(emailVerificationService, "otpExpiryMinutes", 10L);
         ReflectionTestUtils.setField(emailVerificationService, "otpMaxAttempts", 5);
+        SecurityContextHolder.getContext().setAuthentication(
+                new GatewayAuthentication("user-1", "student@example.com", "ROLE_STUDENT", List.of()));
+    }
+
+    @AfterEach
+    void tearDown() {
+        SecurityContextHolder.clearContext();
     }
 
     @Test
@@ -73,7 +84,7 @@ class EmailVerificationServiceImplTest {
                 .token("123456")
                 .type(VerificationType.VERIFY_EMAIL)
                 .attempts(0)
-                .expiresAt(LocalDateTime.now().plusMinutes(10))
+                .expiresAt(Instant.now().plusSeconds(600))
                 .build();
         when(userRepository.findByEmail("student@example.com")).thenReturn(Optional.of(user));
         when(emailVerificationRepository.findValidOtp(eq(user), eq(VerificationType.VERIFY_EMAIL), any(), eq(5)))
@@ -103,7 +114,7 @@ class EmailVerificationServiceImplTest {
                 .token("123456")
                 .type(VerificationType.VERIFY_EMAIL)
                 .attempts(1)
-                .expiresAt(LocalDateTime.now().plusMinutes(10))
+                .expiresAt(Instant.now().plusSeconds(600))
                 .build();
         when(userRepository.findByEmail("student@example.com")).thenReturn(Optional.of(user));
         when(emailVerificationRepository.findValidOtp(eq(user), eq(VerificationType.VERIFY_EMAIL), any(), eq(5)))

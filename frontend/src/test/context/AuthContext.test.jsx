@@ -9,6 +9,10 @@ vi.mock('axios', () => ({
   },
 }));
 
+vi.mock('../../services/deviceInfo', () => ({
+  gatherDeviceInfo: vi.fn(() => Promise.resolve({ ip: '127.0.0.1', deviceInfo: 'Test Browser' })),
+}));
+
 import axios from 'axios';
 import { AuthProvider, AuthContext } from '../../context/AuthContext';
 
@@ -75,6 +79,20 @@ describe('AuthProvider', () => {
     const ref = renderWithAuth();
     expect(ref.user.role).toBe('INSTRUCTOR');
   });
+
+  it('ignores invalid stored user JSON', () => {
+    localStorage.setItem('access_token', 'token');
+    localStorage.setItem('user', '{bad-json');
+
+    const ref = renderWithAuth();
+    expect(ref.user).toBeNull();
+    expect(ref.isAuthenticated).toBe(false);
+  });
+
+  it('throws when setting an incomplete session', () => {
+    const ref = renderWithAuth();
+    expect(() => ref.setSession({ accessToken: 'access-only' })).toThrow('Missing authentication session data');
+  });
 });
 
 describe('AuthContext login', () => {
@@ -116,6 +134,17 @@ describe('AuthContext login', () => {
 
     expect(sessionStorage.getItem('access_token')).toBe('access-2');
     expect(localStorage.getItem('access_token')).toBeNull();
+  });
+
+  it('throws API error message when login fails', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    axios.post.mockRejectedValueOnce({
+      response: { data: { message: 'Invalid credentials' } },
+    });
+
+    const ref = renderWithAuth();
+    await expect(ref.login('john', 'bad-pass', true)).rejects.toThrow('Invalid credentials');
+    consoleSpy.mockRestore();
   });
 });
 
@@ -193,6 +222,29 @@ describe('AuthContext register', () => {
       expect.any(Object),
     );
   });
+
+  it('wraps register API errors with metadata', async () => {
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    axios.post.mockRejectedValueOnce({
+      response: {
+        data: { message: 'Email already exists', code: 1002, status: 409 },
+      },
+    });
+
+    const ref = renderWithAuth();
+    await expect(ref.register({
+      fullname: 'New User',
+      username: 'newuser',
+      email: 'new@test.com',
+      password: 'pass',
+      role: 'student',
+    })).rejects.toMatchObject({
+      message: 'Email already exists',
+      code: 1002,
+      status: 409,
+    });
+    consoleSpy.mockRestore();
+  });
 });
 
 describe('AuthContext updateUser', () => {
@@ -206,5 +258,16 @@ describe('AuthContext updateUser', () => {
     expect(screen.getByTestId('auth-state').textContent).toBe('u-1|INSTRUCTOR');
     const stored = JSON.parse(localStorage.getItem('user'));
     expect(stored.name).toBe('Updated');
+  });
+
+  it('updates user in sessionStorage when session token is active there', () => {
+    sessionStorage.setItem('access_token', 'token');
+    sessionStorage.setItem('user', JSON.stringify({ id: 'u-2', role: 'STUDENT' }));
+
+    const ref = renderWithAuth();
+    act(() => ref.updateUser({ id: 'u-2', role: 'TEACHER', name: 'Session User' }));
+
+    expect(screen.getByTestId('auth-state').textContent).toBe('u-2|INSTRUCTOR');
+    expect(JSON.parse(sessionStorage.getItem('user')).name).toBe('Session User');
   });
 });
