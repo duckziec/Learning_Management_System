@@ -72,3 +72,5 @@ docker-data/
 .claude/
 replacements.txt
 AGENTS.md
+
+google-service-account.json
