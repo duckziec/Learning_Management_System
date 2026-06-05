@@ -16,8 +16,8 @@ spring:
   mail:
     host: ${MAIL_HOST:smtp.gmail.com}
     port: ${MAIL_PORT:587}
-    username: ${MAIL_USERNAME:doinguhotrokhoahoc@gmail.com}
-    password: ${MAIL_PASSWORD:ajvq jqcf zxch jlld}
+    username: ${MAIL_USERNAME:youremailaddress}
+    password: ${MAIL_PASSWORD:yoursecretpassword}
     properties:
       mail:
         smtp:
@@ -27,9 +27,9 @@ spring:
 
   datasource:
     #    url: jdbc:mysql://localhost:3306/identity_lms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&useSSL=false
-    url: ${IDENTITY_URL_DB:jdbc:mysql://gateway01.ap-southeast-1.prod.aws.tidbcloud.com:4000/identity_lms?sslMode=VERIFY_IDENTITY&ssl=true&serverTimezone=${MYSQL_SERVER_TIMEZONE:UTC}&useLegacyDatetimeCode=false&characterEncoding=UTF-8&createDatabaseIfNotExist=true}
-    username: ${IDENTITY_DB_USERNAME:2odVHusPH44Kst8.root}
-    password: ${IDENTITY_DB_PASSWORD:LMOvx8XwRIBXNBN0}
+    url: ${IDENTITY_URL_DB:jdbc:mysql://localhost:3306/identity_lms?useUnicode=true&characterEncoding=UTF-8&serverTimezone=UTC&useLegacyDatetimeCode=false&allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true}
+    username: ${IDENTITY_DB_USERNAME:root}
+    password: ${IDENTITY_DB_PASSWORD:mysqladmin123}
     driver-class-name: com.mysql.cj.jdbc.Driver
     hikari:
       pool-name: identity-pool
@@ -55,9 +55,9 @@ spring:
 
   data:
     redis:
-      host: ${REDIS_HOST:redis-17905.crce264.ap-east-1-1.ec2.cloud.redislabs.com}
-      port: ${REDIS_PORT:17905}
-      password: ${REDIS_PASSWORD:s9ZhlgjxEKXwN923LO6HPIEm8DsFttXW}
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      password: ${REDIS_PASSWORD:redisadmin123}
       timeout: ${REDIS_TIMEOUT:2s}
     #      ssl:
     #        enabled: true
@@ -79,7 +79,7 @@ spring:
 # JWT — Identity Service CHỈ SIGN token, KHÔNG verify nữa.
 # ============================================================
 jwt:
-  signer-key: ${JWT_SIGNER_KEY:1TjXchw5FloESb63Kc+DFhTARvpWL4jUGCwfGWxuG5SIf/1y/LgJxHnMqaF6A/ij}
+  signer-key: ${JWT_SIGNER_KEY:3fb729ab82e9422b00d6d6fba8a767b3e44f330853fd68673f7dbfd826abf1fa}
   valid-duration: ${JWT_ACCESS_DURATION:1800} # in second
   refreshable-duration: ${JWT_REFRESH_DURATION:604800} # in seconds
 
@@ -124,12 +124,12 @@ app:
   # Social Login Configuration (Google OAuth only)
   social:
     google:
-      client-id: ${GOOGLE_CLIENT_ID:1813930079-32b8ul25qad5h29rhmkfqcq9lr6lrphn.apps.googleusercontent.com}
-      client-secret: ${GOOGLE_CLIENT_SECRET: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}
+      client-id: ${GOOGLE_CLIENT_ID:your-client-id-here}
+      client-secret: ${GOOGLE_CLIENT_SECRET:your-client-secret-here}
       token-url: https://oauth2.googleapis.com/token
       user-info-url: https://www.googleapis.com/oauth2/v3/userinfo
       scopes: openid,email,profile
-      allowed-redirect-uris: ${GOOGLE_ALLOWED_REDIRECT_URIS:http://localhost:3000/authenticate,http://localhost:5173/authenticate,https://lmsystem.cloud/authenticate}
+      allowed-redirect-uris: ${GOOGLE_ALLOWED_REDIRECT_URIS:http://localhost:5173/authenticate,https://lmsystem.cloud/authenticate}
 
 # ===== Eureka =====
 eureka:
@@ -143,10 +143,10 @@ eureka:
 
 # ===== MinIO =====
 minio:
-  url: ${MINIO_URL:http://13.211.3.107:9000}
-  public-url: ${MINIO_PUBLIC_URL:${MINIO_URL:http://13.211.3.107:9000}}
-  access-key: ${MINIO_ACCESS_KEY:LmsAdminKey123}
-  secret-key: ${MINIO_SECRET_KEY:LmsSecretKey123}
+  url: ${MINIO_URL:http://localhost:9000}
+  public-url: ${MINIO_PUBLIC_URL:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin123}
   bucket-name: ${MINIO_IDENTITY_BUCKET:lms-identity-bucket}
   # Upload avatar/profile images. Default max 5MB, presigned form het han sau 5 phut.
   max-file-size-bytes: ${MINIO_IDENTITY_MAX_FILE_SIZE_BYTES:5242880}

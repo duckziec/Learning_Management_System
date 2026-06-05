@@ -15,6 +15,9 @@
         <option value="$PROJECT_DIR$/backend/identity-service/pom.xml" />
         <option value="$PROJECT_DIR$/backend/pom.xml" />
         <option value="$PROJECT_DIR$/backend/api-gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/assignment-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/blog-service/pom.xml" />
+        <option value="$PROJECT_DIR$/backend/chatbot-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">

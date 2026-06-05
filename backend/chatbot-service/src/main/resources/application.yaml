@@ -10,11 +10,11 @@ spring:
     web-application-type: servlet
   data:
     mongodb:
-      uri: ${MONGO_URI:mongodb://localhost:27017/chatbot_db}
+      uri: ${CHATBOT_MONGO_URI:mongodb://mongoadmin:mongoadmin123@localhost:27017/chatbot_db?authSource=admin}
     redis:
       host: ${CHATBOT_REDIS_HOST:localhost}
       port: ${CHATBOT_REDIS_PORT:6379}
-      password: ${CHATBOT_REDIS_PASSWORD:change-me}
+      password: ${CHATBOT_REDIS_PASSWORD:redisadmin123}
       timeout: ${CHATBOT_REDIS_TIMEOUT:2000ms}
       lettuce:
         pool:
@@ -38,7 +38,7 @@ eureka:
     prefer-ip-address: true
 
 gemini:
-  api-key: ${GEMINI_API_KEY:}
+  api-key: ${GEMINI_API_KEY:your-gemini-api-key}
   model: ${GEMINI_MODEL:gemini-3-flash-preview}
   base-url: ${GEMINI_BASE_URL:https://generativelanguage.googleapis.com/v1beta/models}
   max-tokens: ${GEMINI_MAX_TOKENS:8192}
