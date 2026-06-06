@@ -131,6 +131,7 @@ export const ENDPOINTS = {
         TAGS: `${BASE_URL}/api/blog/tags`,
         COMMENTS: (postId) => `${BASE_URL}/api/blog/posts/${postId}/comments`,
         VOTE: (postId) => `${BASE_URL}/api/blog/posts/${postId}/vote`,
+        COMMENT_VOTE: (postId, commentId) => `${BASE_URL}/api/blog/posts/${postId}/comments/${commentId}/vote`,
     },
 
     // MinIO Upload

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import blogApi from '../../../../services/blog.api';
 import { mapBlogComment, mapBlogPost, unwrapApiData, unwrapPageContent } from '../../../../utils/blogMappers';
@@ -17,6 +17,9 @@ export default function BlogDetailPage({ adminPreview = false }) {
   const location = useLocation();
   const navigate = useNavigate();
   const basePath = adminPreview ? '/admin/blog' : location.pathname.startsWith('/instructor') ? '/instructor/blog' : '/blog';
+  // Cache the loadPost() Promise (not the resolved value) so StrictMode's second
+  // effect run awaits the same in-flight request instead of firing a new one.
+  const postPromiseCacheRef = useRef(null);
   const [post, setPost] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -26,6 +29,7 @@ export default function BlogDetailPage({ adminPreview = false }) {
   const [commentSubmitting, setCommentSubmitting] = useState(false);
   const [voteSubmitting, setVoteSubmitting] = useState(null);
   const [voteError, setVoteError] = useState('');
+  const [commentVoteSubmitting, setCommentVoteSubmitting] = useState(null);
 
   const loadPost = async () => {
     if (adminPreview) {
@@ -74,7 +78,14 @@ export default function BlogDetailPage({ adminPreview = false }) {
       setCommentError('');
 
       try {
-        const response = await loadPost();
+        // Store the Promise itself (synchronously, before await) so the second
+        // StrictMode effect run reuses the same in-flight request rather than
+        // creating a new one. This prevents double view-count increments.
+        const cacheKey = `${adminPreview}-${id}`;
+        if (!postPromiseCacheRef.current || postPromiseCacheRef.current.key !== cacheKey) {
+          postPromiseCacheRef.current = { key: cacheKey, promise: loadPost() };
+        }
+        const response = await postPromiseCacheRef.current.promise;
         const [postWithAuthor] = await attachBlogAuthorProfiles([unwrapApiData(response)], user);
         const mappedPost = mapBlogPost(postWithAuthor);
 
@@ -95,9 +106,9 @@ export default function BlogDetailPage({ adminPreview = false }) {
         if (!ignore) {
           const relatedPostsWithAuthors = await attachBlogAuthorProfiles(unwrapPageContent(relatedResponse), user);
           setRelatedPosts(
-            relatedPostsWithAuthors
-              .map(mapBlogPost)
-              .filter(item => item.id !== mappedPost.id),
+              relatedPostsWithAuthors
+                  .map(mapBlogPost)
+                  .filter(item => item.id !== mappedPost.id),
           );
         }
       } catch (_err) {
@@ -137,12 +148,47 @@ export default function BlogDetailPage({ adminPreview = false }) {
       await loadComments(post.id);
     } catch (err) {
       const message = err.response?.status === 401
-        ? 'Bạn cần đăng nhập để bình luận.'
-        : 'Không thể gửi bình luận. Vui lòng thử lại sau.';
+          ? 'Bạn cần đăng nhập để bình luận.'
+          : 'Không thể gửi bình luận. Vui lòng thử lại sau.';
       setCommentError(message);
       throw err;
     } finally {
       setCommentSubmitting(false);
+    }
+  };
+
+  const updateCommentVoteInTree = (commentList, commentId, voteData) =>
+      commentList.map(c => {
+        if (c.id === commentId) {
+          return {
+            ...c,
+            upvoteCount: voteData?.upvoteCount ?? c.upvoteCount,
+            downvoteCount: voteData?.downvoteCount ?? c.downvoteCount,
+            userVote: voteData?.voteType ? voteData.voteType.toLowerCase() : null,
+          };
+        }
+        if (c.replies?.length) {
+          return { ...c, replies: updateCommentVoteInTree(c.replies, commentId, voteData) };
+        }
+        return c;
+      });
+
+  const handleCommentVote = async (commentId, type) => {
+    if (!post?.id) return;
+    if (!isAuthenticated) {
+      navigate('/login', { state: { from: location } });
+      return;
+    }
+    try {
+      setCommentVoteSubmitting({ commentId, type });
+      const voteType = type === 'upvote' ? 'UPVOTE' : 'DOWNVOTE';
+      const response = await blogApi.voteComment(post.id, commentId, voteType);
+      const voteData = unwrapApiData(response);
+      setComments(prev => updateCommentVoteInTree(prev, commentId, voteData));
+    } catch (_err) {
+      // silently ignore — user can retry by clicking again
+    } finally {
+      setCommentVoteSubmitting(null);
     }
   };
 
@@ -162,13 +208,13 @@ export default function BlogDetailPage({ adminPreview = false }) {
       const voteData = unwrapApiData(response);
 
       setPost(currentPost => currentPost
-        ? mapBlogPost({
-          ...currentPost,
-          upvoteCount: voteData?.upvoteCount ?? currentPost.upvoteCount,
-          downvoteCount: voteData?.downvoteCount ?? currentPost.downvoteCount,
-          userVote: voteData?.voteType ?? null,
-        })
-        : currentPost);
+          ? mapBlogPost({
+            ...currentPost,
+            upvoteCount: voteData?.upvoteCount ?? currentPost.upvoteCount,
+            downvoteCount: voteData?.downvoteCount ?? currentPost.downvoteCount,
+            userVote: voteData?.voteType ?? null,
+          })
+          : currentPost);
     } catch (err) {
       setVoteError(err.response?.data?.message || 'Không thể ghi nhận đánh giá. Vui lòng thử lại sau.');
     } finally {
@@ -178,125 +224,127 @@ export default function BlogDetailPage({ adminPreview = false }) {
 
   if (loading) {
     return (
-      <AnimatedPage>
-        <div className="blog-page">
-          <div className="blog-empty-state">Đang tải bài viết...</div>
-        </div>
-      </AnimatedPage>
+        <AnimatedPage>
+          <div className="blog-page">
+            <div className="blog-empty-state">Đang tải bài viết...</div>
+          </div>
+        </AnimatedPage>
     );
   }
 
   if (error || !post) {
     return (
-      <AnimatedPage>
-        <div className="blog-page">
-          {!adminPreview && (
-          <nav className="ch-breadcrumb">
-            <Link to={basePath}>Bài viết</Link>
-          </nav>
-          )}
-          <div className="blog-empty-state">{error}</div>
-        </div>
-      </AnimatedPage>
+        <AnimatedPage>
+          <div className="blog-page">
+            {!adminPreview && (
+                <nav className="ch-breadcrumb">
+                  <Link to={basePath}>Bài viết</Link>
+                </nav>
+            )}
+            <div className="blog-empty-state">{error}</div>
+          </div>
+        </AnimatedPage>
     );
   }
 
   return (
-    <AnimatedPage>
-      <div className="blog-detail-page">
-        <div className="blog-detail-shell">
-          {!adminPreview && (
-          <nav className="ch-breadcrumb blog-detail-breadcrumb">
-            <Link to={basePath}>Bài viết</Link>
-            <span className="material-symbols-outlined">chevron_right</span>
-            <span>{post.title}</span>
-          </nav>
-          )}
+      <AnimatedPage>
+        <div className="blog-detail-page">
+          <div className="blog-detail-shell">
+            {!adminPreview && (
+                <nav className="ch-breadcrumb blog-detail-breadcrumb">
+                  <Link to={basePath}>Bài viết</Link>
+                  <span className="material-symbols-outlined">chevron_right</span>
+                  <span>{post.title}</span>
+                </nav>
+            )}
 
-          <article className="blog-detail-article">
-            <header className="blog-detail-hero">
-              <span className="blog-detail-category">{post.category}</span>
-              <h1 className="blog-detail-title">{post.title}</h1>
-              {post.excerpt && <p className="blog-detail-excerpt">{post.excerpt}</p>}
+            <article className="blog-detail-article">
+              <header className="blog-detail-hero">
+                <span className="blog-detail-category">{post.category}</span>
+                <h1 className="blog-detail-title">{post.title}</h1>
+                {post.excerpt && <p className="blog-detail-excerpt">{post.excerpt}</p>}
 
-              <div className="blog-detail-meta">
-                <img
-                  src={post.authorAvatar}
-                  alt={post.author}
-                  className="blog-detail-author-avatar"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="author-info">
-                  <h4>{post.author}</h4>
-                  <p style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
-                    <span>{post.date}</span>
-                    <span>•</span>
-                    <span>{post.readTime}</span>
-                    <span>•</span>
-                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                <div className="blog-detail-meta">
+                  <img
+                      src={post.authorAvatar}
+                      alt={post.author}
+                      className="blog-detail-author-avatar"
+                      referrerPolicy="no-referrer"
+                  />
+                  <div className="author-info">
+                    <h4>{post.author}</h4>
+                    <p style={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', gap: '6px' }}>
+                      <span>{post.date}</span>
+                      <span>•</span>
+                      <span>{post.readTime}</span>
+                      <span>•</span>
+                      <span style={{ display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
                       <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>visibility</span>
-                      {post.viewCount || 0} lượt xem
+                        {post.viewCount || 0} lượt xem
                     </span>
-                  </p>
+                    </p>
+                  </div>
                 </div>
+              </header>
+
+              <div className="blog-detail-cover">
+                <img src={post.image} alt={post.title} />
               </div>
-            </header>
 
-            <div className="blog-detail-cover">
-              <img src={post.image} alt={post.title} />
-            </div>
+              <div className="blog-detail-body">
+                <div
+                    className="blog-detail-content"
+                    dangerouslySetInnerHTML={{ __html: post.content || '<p>Nội dung đang được cập nhật.</p>' }}
+                />
 
-            <div className="blog-detail-body">
-              <div
-                className="blog-detail-content"
-                dangerouslySetInnerHTML={{ __html: post.content || '<p>Nội dung đang được cập nhật.</p>' }}
-              />
+                {!adminPreview && (
+                    <div className="share-article blog-vote-bar">
+                      <span className="share-label">Đánh giá bài viết</span>
+                      <div className="share-btns blog-vote-actions">
+                        <button
+                            className={`share-icon-btn vote-icon-btn ${post.userVote === 'upvote' ? 'active' : ''}`}
+                            type="button"
+                            aria-label="Thích bài viết"
+                            disabled={voteSubmitting === 'upvote'}
+                            onClick={() => handleVote('upvote')}
+                        >
+                          <span className="material-symbols-outlined">thumb_up</span>
+                          <span className="vote-count">{post.upvoteCount || 0}</span>
+                        </button>
+                        <button
+                            className={`share-icon-btn vote-icon-btn ${post.userVote === 'downvote' ? 'active' : ''}`}
+                            type="button"
+                            aria-label="Không thích bài viết"
+                            disabled={voteSubmitting === 'downvote'}
+                            onClick={() => handleVote('downvote')}
+                        >
+                          <span className="material-symbols-outlined">thumb_down</span>
+                          <span className="vote-count">{post.downvoteCount || 0}</span>
+                        </button>
+                      </div>
+                      {voteError && <span className="blog-vote-error">{voteError}</span>}
+                    </div>
+                )}
 
-              {!adminPreview && (
-              <div className="share-article blog-vote-bar">
-                <span className="share-label">Đánh giá bài viết</span>
-                <div className="share-btns blog-vote-actions">
-                  <button
-                    className={`share-icon-btn vote-icon-btn ${post.userVote === 'upvote' ? 'active' : ''}`}
-                    type="button"
-                    aria-label="Thích bài viết"
-                    disabled={voteSubmitting === 'upvote'}
-                    onClick={() => handleVote('upvote')}
-                  >
-                    <span className="material-symbols-outlined">thumb_up</span>
-                    <span className="vote-count">{post.upvoteCount || 0}</span>
-                  </button>
-                  <button
-                    className={`share-icon-btn vote-icon-btn ${post.userVote === 'downvote' ? 'active' : ''}`}
-                    type="button"
-                    aria-label="Không thích bài viết"
-                    disabled={voteSubmitting === 'downvote'}
-                    onClick={() => handleVote('downvote')}
-                  >
-                    <span className="material-symbols-outlined">thumb_down</span>
-                    <span className="vote-count">{post.downvoteCount || 0}</span>
-                  </button>
-                </div>
-                {voteError && <span className="blog-vote-error">{voteError}</span>}
+                <CommentSection
+                    comments={comments}
+                    currentUser={user}
+                    isAuthenticated={isAuthenticated}
+                    onAuthRequired={() => navigate('/login', { state: { from: location } })}
+                    onSubmit={handleSubmitComment}
+                    submitting={commentSubmitting}
+                    error={commentError}
+                    readOnly={adminPreview}
+                    onVoteComment={handleCommentVote}
+                    commentVoteSubmitting={commentVoteSubmitting}
+                />
               </div>
-              )}
-
-              <CommentSection
-                comments={comments}
-                currentUser={user}
-                isAuthenticated={isAuthenticated}
-                onAuthRequired={() => navigate('/login', { state: { from: location } })}
-                onSubmit={handleSubmitComment}
-                submitting={commentSubmitting}
-                error={commentError}
-                readOnly={adminPreview}
-              />
-            </div>
-          </article>
+            </article>
+          </div>
         </div>
-      </div>
 
-      <RelatedPosts posts={relatedPosts} />
-    </AnimatedPage>
+        <RelatedPosts posts={relatedPosts} />
+      </AnimatedPage>
   );
 }

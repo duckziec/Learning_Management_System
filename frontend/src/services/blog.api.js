@@ -29,9 +29,9 @@ export const blogApi = {
     skipAuthRefresh: true,
   }),
   createTag: (data) => apiClient.post(ENDPOINTS.BLOG.TAGS, data)
-    .then((res) => res?.data?.data ?? res?.data),
+      .then((res) => res?.data?.data ?? res?.data),
   updateTag: (id, data) => apiClient.put(`${ENDPOINTS.BLOG.TAGS}/${id}`, data)
-    .then((res) => res?.data?.data ?? res?.data),
+      .then((res) => res?.data?.data ?? res?.data),
   deleteTag: (id) => apiClient.delete(`${ENDPOINTS.BLOG.TAGS}/${id}`),
 
   // Comments
@@ -44,6 +44,7 @@ export const blogApi = {
 
   // Voting
   vote: (postId, voteType) => apiClient.post(ENDPOINTS.BLOG.VOTE(postId), { voteType }), // voteType: 'UPVOTE' | 'DOWNVOTE'
+  voteComment: (postId, commentId, voteType) => apiClient.post(ENDPOINTS.BLOG.COMMENT_VOTE(postId, commentId), { voteType }),
 };
 
 export default blogApi;

@@ -154,12 +154,12 @@
 }
 
 .day-label {
-    display: block;
-    font-size: 0.75rem;
-    font-weight: 800;
-    color: #94a3b8;
-    margin-bottom: 12px;
-    text-align: center;
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: #94a3b8;
+  margin-bottom: 12px;
+  text-align: center;
 }
 
 .timetable-grid.stackable.full-week {
@@ -322,6 +322,50 @@
   gap: 8px;
 }
 
+.sessions-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.sessions-page-btn {
+  min-width: 32px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: white;
+  color: #475569;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sessions-page-btn:hover:not(:disabled) {
+  border-color: #22c55e;
+  color: #16a34a;
+  background: #f0fdf4;
+}
+
+.sessions-page-btn.active {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: white;
+}
+
+.sessions-page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
 .session-row {
   display: flex;
   align-items: center;
@@ -372,6 +416,7 @@
   color: #94a3b8;
   margin-top: 3px;
 }
+
 
 .enrollment-health-card {
   background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);

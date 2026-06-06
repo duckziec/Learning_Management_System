@@ -265,6 +265,55 @@
   font-size: 18px !important;
 }
 
+.ch-sessions-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.ch-sessions-pagination {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  align-self: flex-end;
+}
+
+.ch-sessions-nav-btn {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 8px;
+  color: white;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  padding: 0;
+}
+
+.ch-sessions-nav-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.ch-sessions-nav-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.ch-sessions-nav-btn .material-symbols-outlined {
+  font-size: 18px !important;
+}
+
+.ch-sessions-page-info {
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.75);
+  min-width: 36px;
+  text-align: center;
+}
+
 @media (max-width: 900px) {
   .ch-hero-title { font-size: 32px; }
   .ch-sessions-list { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 4px; }
