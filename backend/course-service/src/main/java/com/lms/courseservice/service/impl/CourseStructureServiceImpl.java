@@ -4,6 +4,7 @@ import com.lms.courseservice.configuration.GatewayAuthentication;
 import com.lms.courseservice.dto.request.AddMultipleNodesRequest;
 import com.lms.courseservice.dto.request.AddNodeRequest;
 import com.lms.courseservice.dto.request.ReorderNodesRequest;
+import com.lms.courseservice.dto.request.UpdateNodeTitleRequest;
 import com.lms.courseservice.dto.response.CourseStructureResponse;
 import com.lms.courseservice.dto.response.StructureNodeResponse;
 import com.lms.courseservice.entity.mongo.CourseStructure;
@@ -226,6 +227,30 @@ public class CourseStructureServiceImpl implements CourseStructureService {
         structure.setUpdatedAt(LocalDateTime.now());
 
         courseStructureRepository.save(structure);
+    }
+
+    @Override
+    public CourseStructureResponse updateNodeTitle(String courseId, String nodeId, UpdateNodeTitleRequest request) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new CourseException(ErrorCode.COURSE_NOT_FOUND));
+
+        checkCourseOwner(course);
+        checkNotLocked(course);
+
+        CourseStructure structure = courseStructureRepository
+                .findById(course.getMongoStructureId())
+                .orElseThrow(() -> new CourseException(ErrorCode.COURSE_STRUCTURE_ERROR));
+
+        StructureNode target = structure.getNodes().stream()
+                .filter(n -> n.getId().equals(nodeId))
+                .findFirst()
+                .orElseThrow(() -> new CourseException(ErrorCode.STRUCTURE_NODE_NOT_FOUND));
+
+        target.setTitle(request.getTitle());
+        structure.setUpdatedAt(LocalDateTime.now());
+
+        CourseStructure saved = courseStructureRepository.save(structure);
+        return courseStructureMapper.toCourseStructureResponse(saved);
     }
 
     // ========= HELPER ========

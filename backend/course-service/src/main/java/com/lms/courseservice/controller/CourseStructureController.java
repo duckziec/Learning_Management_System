@@ -4,6 +4,7 @@ import com.lms.courseservice.dto.ApiResponse;
 import com.lms.courseservice.dto.request.AddMultipleNodesRequest;
 import com.lms.courseservice.dto.request.AddNodeRequest;
 import com.lms.courseservice.dto.request.ReorderNodesRequest;
+import com.lms.courseservice.dto.request.UpdateNodeTitleRequest;
 import com.lms.courseservice.dto.response.CourseStructureResponse;
 import com.lms.courseservice.dto.response.StructureNodeResponse;
 import com.lms.courseservice.service.CourseStructureService;
@@ -67,6 +68,17 @@ public class CourseStructureController {
             @PathVariable String courseId) {
         return ApiResponse.<List<StructureNodeResponse>>builder()
                 .data(courseStructureService.getLessonNodes(courseId))
+                .build();
+    }
+
+    @PatchMapping("/nodes/{nodeId}")
+    @PreAuthorize("hasAnyRole('ADMIN', 'INSTRUCTOR')")
+    public ApiResponse<CourseStructureResponse> updateNodeTitle(
+            @PathVariable String courseId,
+            @PathVariable String nodeId,
+            @RequestBody @Valid UpdateNodeTitleRequest request) {
+        return ApiResponse.<CourseStructureResponse>builder()
+                .data(courseStructureService.updateNodeTitle(courseId, nodeId, request))
                 .build();
     }
 

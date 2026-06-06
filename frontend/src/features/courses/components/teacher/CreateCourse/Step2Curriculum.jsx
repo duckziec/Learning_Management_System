@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faGripVertical,
-    faPencilAlt,
     faTrashAlt,
     faPlus,
     faPlayCircle,
@@ -49,6 +48,18 @@ const collectAllNodeIds = (items) => {
     };
     recurse(items);
     return ids;
+};
+
+// Flatten cây thành danh sách { nodeId, parentId, order } để gửi lên reorder API
+const flattenToOrderList = (nodes, parentId = null) => {
+    const result = [];
+    nodes.forEach((node, idx) => {
+        result.push({ nodeId: node.id, parentId, order: idx });
+        if (node.items && node.items.length > 0) {
+            result.push(...flattenToOrderList(node.items, node.id));
+        }
+    });
+    return result;
 };
 
 // Xây content object theo format backend yêu cầu
@@ -142,17 +153,6 @@ const CurriculumNode = ({ node, level = 0, index, totalItems, onUpdate, onDelete
                         </>
                     )}
 
-                    <button
-                        className="action-text-btn edit"
-                        onClick={() => onUpdate(node.id, 'OPEN_MODAL', {
-                            type: node.type === 'lesson' ? 'part' : node.type,
-                            data: node,
-                        })}
-                    >
-                        <FontAwesomeIcon icon={faPencilAlt} />
-                        <span>Chỉnh sửa</span>
-                    </button>
-
                     <button className="action-icon-btn delete" onClick={() => onDelete(node.id)}>
                         <FontAwesomeIcon icon={faTrashAlt} />
                     </button>
@@ -239,13 +239,35 @@ const Step2Curriculum = ({ courseId, data, updateData, onFileUploaded, onFileRem
         }).flat().filter(Boolean);
     };
 
-    const handleUpdate = (id, action, payload) => {
+    const handleUpdate = async (id, action, payload) => {
         if (action === 'OPEN_MODAL') {
             openModal(payload.type, { parentId: id, data: payload.data });
             return;
         }
         const newData = recursiveUpdate(data.chapters, id, action, payload);
         updateData({ chapters: newData });
+
+        if ((action === 'MOVE_UP' || action === 'MOVE_DOWN') && courseId) {
+            setSaving(true);
+            try {
+                const orderList = flattenToOrderList(newData);
+                await courseApi.reorderStructureNodes(courseId, orderList);
+            } catch (err) {
+                toast.error('Không thể lưu thứ tự. Vui lòng thử lại.');
+                updateData({ chapters: data.chapters });
+            } finally {
+                setSaving(false);
+            }
+        }
+
+        if (action === 'EDIT_CHAPTER' && courseId && payload?.title) {
+            try {
+                await courseApi.updateStructureNodeTitle(courseId, id, payload.title);
+            } catch (err) {
+                toast.error('Không thể lưu tên. Vui lòng thử lại.');
+                updateData({ chapters: data.chapters });
+            }
+        }
     };
 
     // ── Add chapter (top-level folder) ───────────────────────────────────────
