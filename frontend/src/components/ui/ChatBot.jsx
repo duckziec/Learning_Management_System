@@ -3,11 +3,23 @@ import { useLocation } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
 import { ENDPOINTS } from '../../constants/endpoints';
 import { formatTimeVN, formatVN, parseBackendUtcDate } from '../../utils/dateTime';
+import { useProblemContext } from '../../context/ProblemContext';
 import '../ui/styles/ChatBot.css';
 
 // ─── Route config ─────────────────────────────────────────────────────────────
 
 const ROUTE_CONFIGS = {
+    // ── PROBLEM context — Socratic tutor ────────────
+    '/exercises/challenge': {
+        title: 'Trợ lý bài tập',
+        subtitle: 'Gợi ý theo phương pháp Socratic',
+        icon: 'psychology',
+        fabIcon: 'psychology',
+        fabColor: '#059669',
+        placeholder: 'Bạn đang gặp khó khăn ở đâu?',
+        contextType: 'PROBLEM',
+        initialMessage: 'Xin chào! Hãy mô tả khó khăn bạn đang gặp. Tôi sẽ đặt câu hỏi gợi mở để bạn tự tìm ra hướng giải quyết.',
+    },
     // ── COURSE context ──────────────────────────────
     '/list-course': {
         title: 'Gợi ý khóa học',
@@ -48,7 +60,11 @@ function getConfig(pathname) {
     return key ? ROUTE_CONFIGS[key] : DEFAULT_CONFIG;
 }
 
-function getContextRefId(pathname, search) {
+function useContextRefId(pathname, search) {
+    const ctx = useProblemContext();
+    if (pathname.startsWith('/exercises/challenge')) {
+        return ctx?.problemId != null ? String(ctx.problemId) : null;
+    }
     if (pathname.startsWith('/course-hub') || pathname.startsWith('/list-course/detail-course')) {
         return new URLSearchParams(search).get('id') || null;
     }
@@ -249,7 +265,7 @@ function HistoryPanel({ contextType, onSelectSession, onClose, activeSessionId }
                             <div className="chatbot-history-title">{s.title || 'Cuộc trò chuyện'}</div>
                             <div className="chatbot-history-meta">
                                 <span>
-                                    {s.contextType === 'COURSE' ? '📚 Gợi ý' : '💬 Trợ lý'}
+                                    {s.contextType === 'COURSE' ? '📚 Gợi ý' : s.contextType === 'PROBLEM' ? '🧩 Bài tập' : '💬 Trợ lý'}
                                     {' • '}{s.totalMessages} tin{' • '}{formatDate(s.lastMessageAt)}
                                 </span>
                             </div>
@@ -267,10 +283,7 @@ export default function Chatbot() {
     const { user } = useAuth();
     const location = useLocation();
     const config = useMemo(() => getConfig(location.pathname), [location.pathname]);
-    const contextRefId = useMemo(
-        () => getContextRefId(location.pathname, location.search),
-        [location.pathname, location.search]
-    );
+    const contextRefId = useContextRefId(location.pathname, location.search);
 
     const [isOpen, setIsOpen] = useState(false);
     const [showHistory, setShowHistory] = useState(false);
