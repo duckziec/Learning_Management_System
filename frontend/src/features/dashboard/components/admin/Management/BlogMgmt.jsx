@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import blogApi from '../../../../../services/blog.api';
@@ -308,9 +308,9 @@ const BlogMgmt = () => {
                   <td>
                     <div style={{ display: 'flex', gap: '6px', justifyContent: 'flex-end' }}>
                       <Link
+                        to={`/admin/blog/${post.id}`}
                         className="admin-btn"
                         style={{ padding: '4px 10px', fontSize: '0.75rem', textDecoration: 'none' }}
-                        to={`/admin/blog/${post.id}`}
                       >
                         <i className="ti ti-eye"></i>
                         Xem

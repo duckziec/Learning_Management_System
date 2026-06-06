@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import React from 'react';
 import {Link} from 'react-router-dom';
 
 const ExerciseBreadcrumb = ({items = []}) => {
@@ -6,7 +6,7 @@ const ExerciseBreadcrumb = ({items = []}) => {
         <nav className="ch-breadcrumb" style={{marginBottom: '32px'}}>
             <Link to="/exercises">Bài tập</Link>
             {items.map((item, index) => (
-                <Fragment key={index}>
+                <React.Fragment key={index}>
           <span className="ch-breadcrumb-separator"
                 style={{margin: '0 8px', display: 'inline-flex', alignItems: 'center'}}>
             <span className="material-symbols-outlined" style={{fontSize: '16px'}}>chevron_right</span>
@@ -18,7 +18,7 @@ const ExerciseBreadcrumb = ({items = []}) => {
                     ) : (
                         <span className="ch-breadcrumb-current">{item.label}</span>
                     )}
-                </Fragment>
+                </React.Fragment>
             ))}
         </nav>
     );

@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../../styles/teacher/PreviewImport/previewTable.css';
 
 export default function PreviewTable({ testCases }) {

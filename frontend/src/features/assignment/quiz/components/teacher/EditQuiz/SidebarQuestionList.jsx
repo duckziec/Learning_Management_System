@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../../styles/teacher/ManualQuiz/sidebarQuestionList.css';
 
 const TYPE_SHORT = {

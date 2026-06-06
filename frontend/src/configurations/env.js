@@ -3,6 +3,8 @@ const readNumberEnv = (value, fallback) => {
   return Number.isFinite(parsed) && parsed > 0 ? parsed : fallback;
 };
 
+const normalizeGatewayHealthUrl = (url) => url.replace('/api/actuator/', '/actuator/');
+
 export const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
 export const API_TIMEOUT_MS = readNumberEnv(import.meta.env.VITE_API_TIMEOUT_MS, 15000);
 
@@ -42,7 +44,8 @@ export const ADMIN_HEALTH_ENDPOINTS = {
   blog:
     import.meta.env.VITE_BLOG_HEALTH_URL ||
     'http://localhost:8084/blog/actuator/health/liveness',
-  gateway:
+  gateway: normalizeGatewayHealthUrl(
     import.meta.env.VITE_GATEWAY_HEALTH_URL ||
-    'http://localhost:8080/actuator/health/liveness',
+      'http://localhost:8080/actuator/health/liveness',
+  ),
 };

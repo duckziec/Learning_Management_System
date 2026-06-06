@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
@@ -16,7 +16,7 @@ const INITIAL_DATA = {
     thumbnailFile: null,
     thumbnailUrl: null,
     description: '',
-    learningPoints: [],
+    learningPoints: [''],
     requirements: [],
     status: 'PRIVATE',
 };
@@ -65,8 +65,10 @@ const CreateCoursePage = () => {
 
     const validate = () => {
         const nextErrors = {};
+        const learningPoints = (courseData.learningPoints || []).filter((point) => point.trim());
         if (!courseData.title?.trim()) nextErrors.title = 'Tiêu đề không được để trống.';
         if (!courseData.duration || Number(courseData.duration) < 1) nextErrors.duration = 'Thời hạn phải ít nhất 1 tháng.';
+        if (learningPoints.length === 0) nextErrors.learningPoints = 'Vui lòng nhập ít nhất một mục tiêu học viên đạt được.';
         return nextErrors;
     };
 
@@ -131,6 +133,7 @@ const CreateCoursePage = () => {
                         updateData={updateCourseData}
                         categories={categories}
                         errors={errors}
+                        requireLearningPoints
                     />
                 </div>
             </main>

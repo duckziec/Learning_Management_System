@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faTimes, faLayerGroup, faFolderOpen,
@@ -119,9 +119,67 @@ export const AddSectionModal = ({ isOpen, onClose, sectionData, onSave }) => {
 
 /* ── Content type config ── */
 const CONTENT_TYPES = [
-    { key: 'video',    label: 'Video',    icon: faVideo, accept: 'video/*',                           folder: 'lessons/videos' },
-    { key: 'document', label: 'Tài liệu', icon: faBook,  accept: '.pdf,.doc,.docx,.ppt,.pptx,.xlsx', folder: 'lessons/documents' },
+    {
+        key: 'video',
+        label: 'Video',
+        icon: faVideo,
+        accept: '.mp4,.mov,.webm',
+        folder: 'lessons/videos',
+        allowedExtensions: ['mp4', 'mov', 'webm'],
+        hint: 'MP4, MOV, WebM',
+        validationLabel: 'File video',
+    },
+    {
+        key: 'document',
+        label: 'Tài liệu',
+        icon: faBook,
+        accept: '.pdf,.doc,.docx,.ppt,.pptx,.xlsx',
+        folder: 'lessons/documents',
+        allowedExtensions: ['pdf', 'doc', 'docx', 'ppt', 'pptx', 'xlsx'],
+        hint: 'PDF, DOC, DOCX, PPT, PPTX, XLSX',
+        validationLabel: 'Tài liệu',
+    },
 ];
+
+const getFileExtension = (fileName = '') => {
+    const lastDotIndex = fileName.lastIndexOf('.');
+    if (lastDotIndex <= 0 || lastDotIndex === fileName.length - 1) return '';
+    return fileName.slice(lastDotIndex + 1).toLowerCase();
+};
+
+const formatExtensions = (extensions = []) => extensions.map((ext) => ext.toUpperCase()).join(', ');
+
+export const validateLessonFileExtension = (file, contentType) => {
+    const typeConfig = CONTENT_TYPES.find(t => t.key === contentType);
+    if (!typeConfig || !file) return null;
+
+    const extension = getFileExtension(file.name);
+    if (typeConfig.allowedExtensions.includes(extension)) return null;
+
+    return `${typeConfig.validationLabel} chỉ hỗ trợ ${formatExtensions(typeConfig.allowedExtensions)}.`;
+};
+
+const EMPTY_FILES_BY_TYPE = {
+    video: { fileUrl: null, fileType: null },
+    document: { fileUrl: null, fileType: null },
+};
+
+const createFilesByType = (partData) => {
+    const filesByType = {
+        video: { ...EMPTY_FILES_BY_TYPE.video },
+        document: { ...EMPTY_FILES_BY_TYPE.document },
+    };
+
+    const initialType = partData?.contentType || 'video';
+    if (partData?.fileUrl && filesByType[initialType]) {
+        filesByType[initialType] = {
+            fileUrl: partData.fileUrl,
+            fileType: partData.fileType || null,
+        };
+    }
+
+    return filesByType;
+};
 
 /* ── File upload area ── */
 const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadingChange }) => {
@@ -129,6 +187,7 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
     const [progress, setProgress] = useState(0);
     const [fileName, setFileName] = useState('');
     const [fileUrl, setFileUrl] = useState(existingUrl || null);
+    const [uploadError, setUploadError] = useState('');
     const fileInputRef = useRef(null);
     const xhrRef = useRef(null);
     const cancelledRef = useRef(false); // true khi user chủ động hủy hoặc component unmount
@@ -151,14 +210,27 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
         setFileUrl(existingUrl || null);
         setFileName(existingUrl ? existingUrl.split('/').pop() : '');
         setProgress(0);
+        setUploadError('');
     }, [contentType, existingUrl]);
 
     const handleFileChange = async (e) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
+        const validationError = validateLessonFileExtension(file, contentType);
+        if (validationError) {
+            setFileName(file.name);
+            setUploadError(validationError);
+            setUploadState('error');
+            setProgress(0);
+            onUploadingChange?.(false);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+            return;
+        }
+
         cancelledRef.current = false;
         setFileName(file.name);
+        setUploadError('');
         setUploadState('uploading');
         setProgress(0);
         onUploadingChange?.(true);
@@ -192,6 +264,7 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
         } catch (err) {
             if (cancelledRef.current) return; // bị cancel chủ động, không cần xử lý
             console.error('Upload error:', err);
+            setUploadError('Tải lên thất bại');
             setUploadState('error');
             onUploadingChange?.(false);
         }
@@ -205,6 +278,7 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
         onRemoved?.(fileUrl);
         setFileUrl(null);
         setFileName('');
+        setUploadError('');
         setUploadState('idle');
         setProgress(0);
         if (fileInputRef.current) fileInputRef.current.value = '';
@@ -242,8 +316,18 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
         return (
             <div className="upload-error-row">
                 <FontAwesomeIcon icon={faTimesCircle} className="upload-error-icon" />
-                <span>Tải lên thất bại</span>
-                <button type="button" className="upload-retry-btn" onClick={() => setUploadState('idle')}>Thử lại</button>
+                <span className="upload-error-text">{uploadError || 'Tải lên thất bại'}</span>
+                <button
+                    type="button"
+                    className="upload-retry-btn"
+                    onClick={() => {
+                        setUploadState('idle');
+                        setUploadError('');
+                        setFileName('');
+                    }}
+                >
+                    Chọn lại
+                </button>
             </div>
         );
     }
@@ -255,7 +339,7 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
                 {contentType === 'video' ? 'Chọn file video' : 'Chọn tài liệu'}
             </span>
             <span className="upload-dropzone-hint">
-                {contentType === 'video' ? 'MP4, MOV, WebM' : 'PDF, DOCX, PPTX, XLSX'}
+                {typeConfig?.hint}
             </span>
             <input
                 ref={fileInputRef}
@@ -272,55 +356,90 @@ const FileUpload = ({ contentType, existingUrl, onUploaded, onRemoved, onUploadi
 export const AddContentPartModal = ({ isOpen, onClose, partData, onSave, onFileUploaded, onFileRemoved }) => {
     const [title, setTitle]             = useState('');
     const [contentType, setContentType] = useState('video');
-    const [fileUrl, setFileUrl]         = useState(null);
-    const [fileType, setFileType]       = useState(null);
-    const [replacedUrl, setReplacedUrl] = useState(null);
+    const [filesByType, setFilesByType] = useState(EMPTY_FILES_BY_TYPE);
     const [isUploading, setIsUploading] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             setTitle(partData?.title || '');
             setContentType(partData?.contentType || 'video');
-            setFileUrl(partData?.fileUrl || null);
-            setFileType(null);
-            setReplacedUrl(null);
+            setFilesByType(createFilesByType(partData));
             setIsUploading(false);
         }
     }, [isOpen, partData]);
 
     const handleContentTypeChange = (key) => {
         setContentType(key);
-        // Switching type clears the current file
-        if (fileUrl) {
-            setReplacedUrl(fileUrl);
-            setFileUrl(null);
-        }
     };
 
     const handleFileUploaded = (url, mimeType) => {
-        setFileUrl(url);
-        setFileType(mimeType);
+        setFilesByType((prev) => ({
+            ...prev,
+            [contentType]: {
+                fileUrl: url,
+                fileType: mimeType,
+            },
+        }));
         onFileUploaded?.(url);
     };
 
     const handleFileRemoved = (url) => {
-        if (url === fileUrl) {
-            setReplacedUrl(url);
-            setFileUrl(null);
+        setFilesByType((prev) => ({
+            ...prev,
+            [contentType]: { ...EMPTY_FILES_BY_TYPE[contentType] },
+        }));
+        if (url && url !== partData?.fileUrl) {
+            onFileRemoved?.(url);
         }
     };
 
+    const cleanupUnsavedUploads = (savedType = null) => {
+        Object.entries(filesByType).forEach(([type, fileData]) => {
+            if (type === savedType) return;
+            if (fileData.fileUrl && fileData.fileUrl !== partData?.fileUrl) {
+                onFileRemoved?.(fileData.fileUrl);
+            }
+        });
+    };
+
+    const getReplacedUrl = () => {
+        if (!partData?.fileUrl) return null;
+        if (contentType !== partData.contentType) return partData.fileUrl;
+        const activeFileUrl = filesByType[contentType]?.fileUrl;
+        if (!activeFileUrl || activeFileUrl !== partData.fileUrl) return partData.fileUrl;
+        return null;
+    };
+
+    const activeFile = filesByType[contentType] || EMPTY_FILES_BY_TYPE[contentType];
+
     // Khi hủy: xóa file đã upload trong session này (chưa được lưu vào lesson)
     const handleCancel = () => {
-        if (fileUrl && fileUrl !== partData?.fileUrl) {
-            onFileRemoved?.(fileUrl);
-        }
+        cleanupUnsavedUploads();
         onClose();
     };
 
     const handleSubmit = () => {
         if (!title.trim()) return;
-        onSave({ title: title.trim(), contentType, fileUrl, fileType, replacedUrl });
+
+        const replacedUrl = getReplacedUrl();
+        const payload = {
+            title: title.trim(),
+            contentType,
+            fileUrl: activeFile?.fileUrl || null,
+            fileType: activeFile?.fileType || null,
+            replacedUrl,
+        };
+
+        if (partData) {
+            cleanupUnsavedUploads(contentType);
+        } else {
+            Object.entries(filesByType).forEach(([type, fileData]) => {
+                if (type === contentType) return;
+                if (fileData.fileUrl) onFileRemoved?.(fileData.fileUrl);
+            });
+        }
+
+        onSave(payload);
         onClose();
     };
 
@@ -369,7 +488,7 @@ export const AddContentPartModal = ({ isOpen, onClose, partData, onSave, onFileU
                     <label>{contentType === 'video' ? 'File video' : 'File tài liệu'}</label>
                     <FileUpload
                         contentType={contentType}
-                        existingUrl={fileUrl}
+                        existingUrl={activeFile?.fileUrl}
                         onUploaded={handleFileUploaded}
                         onRemoved={handleFileRemoved}
                         onUploadingChange={setIsUploading}

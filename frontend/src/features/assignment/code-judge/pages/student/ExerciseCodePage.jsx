@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
 import { assignmentApi } from '../../../../../services/assignment.api';
 import { courseApi } from '../../../../../services/course.api';
@@ -321,7 +321,7 @@ export default function ExerciseCodePage() {
       const compileError = getCompileErrorFromResponse(err);
       if (err.response?.data?.code === 3313 || compileError) {
         setRunResult({
-          status: 'COMPILATION_ERROR',
+          status: 'CE',
           allPassed: false,
           score: 0,
           compileError: compileError || err.response?.data?.message || 'Biên dịch thất bại.',

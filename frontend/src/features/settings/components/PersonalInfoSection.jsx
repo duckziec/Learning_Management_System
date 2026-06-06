@@ -1,4 +1,4 @@
-import {useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import useAuth from '../../../hooks/useAuth';
 import {authApi} from '../../../services/auth.api';
 import {useFileUpload} from '../../../hooks/useFileUpload';

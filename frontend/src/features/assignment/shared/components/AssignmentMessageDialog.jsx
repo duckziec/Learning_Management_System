@@ -1,3 +1,4 @@
+import React from 'react';
 import '../styles/AssignmentMessageDialog.css';
 
 const ICON_BY_TONE = {

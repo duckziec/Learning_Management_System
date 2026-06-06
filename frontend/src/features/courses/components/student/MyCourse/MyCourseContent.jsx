@@ -1,3 +1,4 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import CourseCard from "../../../../../components/ui/CourseCard";
 import "../../../styles/student/MyCourse/MyCourseContent.css"

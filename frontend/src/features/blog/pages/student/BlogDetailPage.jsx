@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import blogApi from '../../../../services/blog.api';
 import { mapBlogComment, mapBlogPost, unwrapApiData, unwrapPageContent } from '../../../../utils/blogMappers';
@@ -16,11 +16,7 @@ export default function BlogDetailPage({ adminPreview = false }) {
   const { user, isAuthenticated } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
-  const basePath = adminPreview
-    ? '/admin/blog'
-    : location.pathname.startsWith('/instructor')
-      ? '/instructor/blog'
-      : '/blog';
+  const basePath = adminPreview ? '/admin/blog' : location.pathname.startsWith('/instructor') ? '/instructor/blog' : '/blog';
   const [post, setPost] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
   const [comments, setComments] = useState([]);
@@ -95,9 +91,7 @@ export default function BlogDetailPage({ adminPreview = false }) {
           }
         }
 
-        const relatedResponse = adminPreview
-          ? await blogApi.getAdminPosts({ page: 0, size: 4, sort: 'createdAt,desc' })
-          : await blogApi.getPublicPosts({ page: 0, size: 4, sort: 'createdAt,desc' });
+        const relatedResponse = await blogApi.getPublicPosts({ page: 0, size: 4, sort: 'createdAt,desc' });
         if (!ignore) {
           const relatedPostsWithAuthors = await attachBlogAuthorProfiles(unwrapPageContent(relatedResponse), user);
           setRelatedPosts(
@@ -197,9 +191,9 @@ export default function BlogDetailPage({ adminPreview = false }) {
       <AnimatedPage>
         <div className="blog-page">
           {!adminPreview && (
-            <nav className="ch-breadcrumb">
-              <Link to={basePath}>Bài viết</Link>
-            </nav>
+          <nav className="ch-breadcrumb">
+            <Link to={basePath}>Bài viết</Link>
+          </nav>
           )}
           <div className="blog-empty-state">{error}</div>
         </div>
@@ -212,11 +206,11 @@ export default function BlogDetailPage({ adminPreview = false }) {
       <div className="blog-detail-page">
         <div className="blog-detail-shell">
           {!adminPreview && (
-            <nav className="ch-breadcrumb blog-detail-breadcrumb">
-              <Link to={basePath}>Bài viết</Link>
-              <span className="material-symbols-outlined">chevron_right</span>
-              <span>{post.title}</span>
-            </nav>
+          <nav className="ch-breadcrumb blog-detail-breadcrumb">
+            <Link to={basePath}>Bài viết</Link>
+            <span className="material-symbols-outlined">chevron_right</span>
+            <span>{post.title}</span>
+          </nav>
           )}
 
           <article className="blog-detail-article">
@@ -259,32 +253,32 @@ export default function BlogDetailPage({ adminPreview = false }) {
               />
 
               {!adminPreview && (
-                <div className="share-article blog-vote-bar">
-                  <span className="share-label">Đánh giá bài viết</span>
-                  <div className="share-btns blog-vote-actions">
-                    <button
-                      className={`share-icon-btn vote-icon-btn ${post.userVote === 'upvote' ? 'active' : ''}`}
-                      type="button"
-                      aria-label="Thích bài viết"
-                      disabled={voteSubmitting === 'upvote'}
-                      onClick={() => handleVote('upvote')}
-                    >
-                      <span className="material-symbols-outlined">thumb_up</span>
-                      <span className="vote-count">{post.upvoteCount || 0}</span>
-                    </button>
-                    <button
-                      className={`share-icon-btn vote-icon-btn ${post.userVote === 'downvote' ? 'active' : ''}`}
-                      type="button"
-                      aria-label="Không thích bài viết"
-                      disabled={voteSubmitting === 'downvote'}
-                      onClick={() => handleVote('downvote')}
-                    >
-                      <span className="material-symbols-outlined">thumb_down</span>
-                      <span className="vote-count">{post.downvoteCount || 0}</span>
-                    </button>
-                  </div>
-                  {voteError && <span className="blog-vote-error">{voteError}</span>}
+              <div className="share-article blog-vote-bar">
+                <span className="share-label">Đánh giá bài viết</span>
+                <div className="share-btns blog-vote-actions">
+                  <button
+                    className={`share-icon-btn vote-icon-btn ${post.userVote === 'upvote' ? 'active' : ''}`}
+                    type="button"
+                    aria-label="Thích bài viết"
+                    disabled={voteSubmitting === 'upvote'}
+                    onClick={() => handleVote('upvote')}
+                  >
+                    <span className="material-symbols-outlined">thumb_up</span>
+                    <span className="vote-count">{post.upvoteCount || 0}</span>
+                  </button>
+                  <button
+                    className={`share-icon-btn vote-icon-btn ${post.userVote === 'downvote' ? 'active' : ''}`}
+                    type="button"
+                    aria-label="Không thích bài viết"
+                    disabled={voteSubmitting === 'downvote'}
+                    onClick={() => handleVote('downvote')}
+                  >
+                    <span className="material-symbols-outlined">thumb_down</span>
+                    <span className="vote-count">{post.downvoteCount || 0}</span>
+                  </button>
                 </div>
+                {voteError && <span className="blog-vote-error">{voteError}</span>}
+              </div>
               )}
 
               <CommentSection

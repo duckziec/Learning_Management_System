@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../../styles/teacher/ImportTestCases/fileStatusCard.css';
 
 function formatFileSize(bytes = 0) {

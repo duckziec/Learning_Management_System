@@ -28,6 +28,11 @@ export const blogApi = {
     skipAuth: true,
     skipAuthRefresh: true,
   }),
+  createTag: (data) => apiClient.post(ENDPOINTS.BLOG.TAGS, data)
+    .then((res) => res?.data?.data ?? res?.data),
+  updateTag: (id, data) => apiClient.put(`${ENDPOINTS.BLOG.TAGS}/${id}`, data)
+    .then((res) => res?.data?.data ?? res?.data),
+  deleteTag: (id) => apiClient.delete(`${ENDPOINTS.BLOG.TAGS}/${id}`),
 
   // Comments
   getComments: (postId, params) => apiClient.get(ENDPOINTS.BLOG.COMMENTS(postId), {

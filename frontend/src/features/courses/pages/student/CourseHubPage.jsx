@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { courseApi } from "../../../../services/course.api";
@@ -213,7 +213,7 @@ export default function CourseHubPage() {
         let done = 0;
         await Promise.all(problemList.map((problem) => {
           const problemId = problem.id ?? problem.problemId;
-          return assignmentApi.getSubmissionHistory({ problemId, size: 1, status: "ACCEPTED" })
+          return assignmentApi.getSubmissionHistory({ problemId, size: 1, status: "AC" })
             .then((history) => {
               const list = Array.isArray(history) ? history : (history?.content ?? []);
               if (list.length > 0) done++;

@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function ManualQuizFooter({ onAddQuestion, onReuseQuestions, onPublish, saving = false }) {
   return (
     <div className="quiz-footer-actions">

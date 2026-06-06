@@ -141,18 +141,18 @@ export const ENDPOINTS = {
         IDENTITY_PRESIGNED: `${BASE_URL}/api/identity/storage/presigned-url`,
     },
 
+    // Legacy Judge0 hook endpoints. The current backend proxies judging through assignment submissions.
+    JUDGE0: {
+        SUBMIT: `${BASE_URL}/api/assignment/submissions`,
+        RESULT: (token) => `${BASE_URL}/api/assignment/submissions/${token}`,
+    },
+
     // Chatbot Service
     CHATBOT: {
         CHAT: `${BASE_URL}/api/chatbot/chat`,
         SESSIONS: `${BASE_URL}/api/chatbot/sessions`,
         SESSION_MESSAGES: (sessionId) => `${BASE_URL}/api/chatbot/sessions/${sessionId}/messages`,
         ARCHIVE_SESSION: (sessionId) => `${BASE_URL}/api/chatbot/sessions/${sessionId}/archive`,
-    },
-
-    // Judge0 proxy
-    JUDGE0: {
-        SUBMIT: `${BASE_URL}/api/assignment/judge0/submissions`,
-        RESULT: (token) => `${BASE_URL}/api/assignment/judge0/submissions/${token}`,
     },
 
     // Admin Dashboard

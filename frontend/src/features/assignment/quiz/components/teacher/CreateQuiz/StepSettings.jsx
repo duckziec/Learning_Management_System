@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../../styles/teacher/CreateQuiz/stepSettings.css';
 
 export default function StepSettings({

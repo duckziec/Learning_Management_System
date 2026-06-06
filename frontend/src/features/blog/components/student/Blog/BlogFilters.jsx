@@ -1,3 +1,5 @@
+import React from 'react';
+
 export default function BlogFilters({ categories, activeCategory, onCategoryChange, onSearch, searchQuery }) {
   const selectedCategoryId = activeCategory == null ? '' : String(activeCategory);
 

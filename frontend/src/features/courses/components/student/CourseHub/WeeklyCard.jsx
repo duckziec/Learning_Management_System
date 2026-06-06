@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import React, {useState} from 'react';
 import '../../styles/CourseHub/WeeklyCard.css';
 
 const TODAY_INDEX = 0;

@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../../styles/student/ExerciseHub/SectionHeader.css';
 
 const SectionHeader = ({ icon, title, link = null }) => {

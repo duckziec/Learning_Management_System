@@ -1,5 +1,7 @@
 .course-sidebar-wrapper {
     order: -1;
+    position: relative;
+    z-index: 30;
 }
 
 @media (min-width: 1024px) {
@@ -8,10 +10,13 @@
         position: sticky;
         top: 6rem;
         align-self: start;
+        z-index: 40;
     }
 }
 
 .course-sidebar {
+    position: relative;
+    z-index: 1;
     height: fit-content;
     background-color: #ffffff;
     border-radius: 0.75rem;
@@ -89,7 +94,7 @@
 .course-sidebar__metric {
     min-width: 0;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 0.65rem;
     padding: 0.75rem;
     border: 1px solid #e2e8f0;
@@ -134,7 +139,8 @@
     font-size: 0.84rem;
     font-weight: 800;
     line-height: 1.2;
-    overflow-wrap: anywhere;
+    overflow-wrap: normal;
+    word-break: keep-all;
 }
 
 .dark .course-sidebar__metric-value {

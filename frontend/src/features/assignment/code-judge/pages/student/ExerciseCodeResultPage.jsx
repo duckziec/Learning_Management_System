@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Navigate, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { assignmentApi } from '../../../../../services/assignment.api';
 import { buildAppErrorState } from '../../../../../utils/appError';
@@ -22,27 +22,21 @@ function isJudgingStatus(status) {
 }
 
 function isPassedStatus(status) {
-  return ['AC', 'ACCEPTED'].includes(normalizeStatus(status));
+  return normalizeStatus(status) === 'AC';
 }
 
 function getStatusLabel(status) {
   const normalized = normalizeStatus(status);
   const labels = {
     AC: 'Passed',
-    ACCEPTED: 'Passed',
     WA: 'Wrong answer',
-    WRONG_ANSWER: 'Wrong answer',
     TLE: 'Time limit',
-    TIME_LIMIT_EXCEEDED: 'Time limit',
     MLE: 'Memory limit',
-    MEMORY_LIMIT_EXCEEDED: 'Memory limit',
     RE: 'Runtime error',
-    RUNTIME_ERROR: 'Runtime error',
     CE: 'Compile error',
-    COMPILATION_ERROR: 'Compile error',
     PENDING: 'Pending',
     JUDGING: 'Judging',
-    INTERNAL_ERROR: 'Internal error',
+    IE: 'Internal error',
   };
   return labels[normalized] || normalized || 'Unknown';
 }
@@ -172,7 +166,7 @@ export default function ExerciseCodeResultPage() {
   const testCases = useMemo(() => getVisibleTestCases(submission), [submission]);
   const isAccepted = isPassedStatus(submission?.status);
   const isStillJudging = isJudgingStatus(submission?.status);
-  const hasCompileError = normalizeStatus(submission?.status) === 'COMPILATION_ERROR' && submission?.compileError;
+  const hasCompileError = normalizeStatus(submission?.status) === 'CE' && submission?.compileError;
   const passedCount = testCases.filter((tc) => isPassedStatus(tc.status)).length;
   const scorePercentage = submission?.score ?? (isAccepted ? 100 : 0);
   const statusClass = getResultStatusClass(submission?.status);

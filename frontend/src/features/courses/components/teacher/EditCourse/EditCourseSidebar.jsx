@@ -1,3 +1,4 @@
+import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faInfoCircle, faList } from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/teacher/EditCourse/editCourseSidebar.css';

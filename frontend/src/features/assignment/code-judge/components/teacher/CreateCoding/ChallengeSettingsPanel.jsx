@@ -1,3 +1,4 @@
+import React from 'react';
 import {POPULAR_LANGUAGES} from '../../../constants/languageBoilerplates';
 import '../../../styles/teacher/CreateCoding/challengeSettingsPanel.css';
 

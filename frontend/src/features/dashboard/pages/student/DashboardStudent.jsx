@@ -1,4 +1,4 @@
-import { useState, useEffect} from 'react';
+import React, { useState, useEffect} from 'react';
 import AnimatedPage from "../../../../components/ui/AnimatedPage";
 import DashboardStats from "../../components/student/DashboardStats";
 import ContinueLearning from "../../components/student/ContinueLearning";

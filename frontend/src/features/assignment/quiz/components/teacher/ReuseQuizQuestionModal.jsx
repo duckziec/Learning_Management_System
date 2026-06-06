@@ -1,4 +1,4 @@
-import {useEffect, useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import {assignmentApi} from '../../../../../services/assignment.api';
 import '../../styles/teacher/reuseQuizQuestionModal.css';
 

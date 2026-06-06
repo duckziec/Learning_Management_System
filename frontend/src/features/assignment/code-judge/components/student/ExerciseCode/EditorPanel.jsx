@@ -1,4 +1,4 @@
-import {lazy, Suspense, useCallback, useEffect, useRef, useState} from 'react';
+import React, {lazy, Suspense, useCallback, useEffect, useRef, useState} from 'react';
 import ConsoleOutput from '../../../../shared/components/ConsoleOutput';
 import {getLanguageById, POPULAR_LANGUAGES} from '../../../constants/languageBoilerplates';
 

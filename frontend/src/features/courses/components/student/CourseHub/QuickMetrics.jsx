@@ -1,3 +1,4 @@
+import React from 'react';
 import '../../styles/CourseHub/QuickMetrics.css';
 
 const METRICS = [];

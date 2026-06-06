@@ -1,3 +1,4 @@
+import React from "react";
 import "../../../styles/student/ListCourse/NoResult.css";
 
 export default function NoResults() {

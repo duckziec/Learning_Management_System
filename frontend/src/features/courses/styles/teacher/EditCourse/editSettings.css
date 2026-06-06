@@ -104,6 +104,8 @@
     margin: 0;
     color: #64748b;
     font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: none;
 }
 
 .transfer-box {

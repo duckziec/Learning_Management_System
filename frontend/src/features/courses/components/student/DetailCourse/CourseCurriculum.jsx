@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import "../../../styles/student/DetailCourse/CourseCurriculum.css";
 
 const LESSON_TYPE_CONFIG = {

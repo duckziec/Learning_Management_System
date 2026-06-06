@@ -1,3 +1,4 @@
+import React from 'react';
 import "../../../styles/student/ExerciseHub/ExerciseHero.css";
 
 const ExerciseHero = ({

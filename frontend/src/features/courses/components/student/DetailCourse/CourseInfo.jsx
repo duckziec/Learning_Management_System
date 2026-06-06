@@ -1,3 +1,4 @@
+import React from "react";
 import "../../../styles/student/DetailCourse/CourseInfo.css";
 
 export default function CourseInfo({ requirements = [], description }) {

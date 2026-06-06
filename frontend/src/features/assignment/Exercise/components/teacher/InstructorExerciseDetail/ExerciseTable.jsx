@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import assignmentApi from '../../../../../../services/assignment.api';
 import '../../../styles/teacher/InstructorExerciseDetail/exerciseTable.css';
@@ -332,7 +332,7 @@ export default function ExerciseTable({
             const isCollapsed = collapsedGroups[scopedKey] !== false;
 
             return (
-              <Fragment key={group.key}>
+              <React.Fragment key={group.key}>
                 <tr className="chapter-header-row">
                   <td colSpan="5">
                     <div className="chapter-header-content">
@@ -395,7 +395,7 @@ export default function ExerciseTable({
                     </td>
                   </tr>
                 ))}
-              </Fragment>
+              </React.Fragment>
             );
           })}
         </tbody>

@@ -1,3 +1,4 @@
+import React from "react";
 import "../../../styles/student/ListCourse/CourseResultHeader.css";
 
 export default function CourseResultHeader({ selectedCategory, resultsCount }) {

@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import React, {Suspense} from 'react';
 import {Outlet, useLocation, useNavigate} from 'react-router-dom';
 import AdminSidebar from '../../features/dashboard/components/admin/Shared/AdminSidebar';
 import AdminTopbar from '../../features/dashboard/components/admin/Shared/AdminTopbar';
@@ -13,13 +13,13 @@ function AdminLayout() {
 
     const getPageTitle = () => {
         const path = location.pathname;
+        if (/^\/admin\/all-courses\/[^/]+/.test(path)) return 'Xem khóa học';
+        if (/^\/admin\/blog\/[^/]+/.test(path)) return 'Xem bài viết';
         if (path.includes('/admin/home')) return 'Dashboard Tổng quan';
         if (path.includes('/admin/users')) return 'Quản lý Người dùng';
-        if (path.match(/^\/admin\/all-courses\/[^/]+$/)) return 'Xem khóa học';
         if (path.includes('/admin/all-courses')) return 'Quản trị Khóa học';
         if (path.includes('/admin/web-content')) return 'Nội dung Website';
         if (path.includes('/admin/judge')) return 'Giám sát Code Judge';
-        if (path.match(/^\/admin\/blog\/[^/]+$/)) return 'Xem bài viết';
         if (path.includes('/admin/blog')) return 'Kiểm duyệt Diễn đàn';
         if (path.includes('/admin/settings')) return 'Cài đặt tài khoản';
         return 'Admin Panel';

@@ -1,10 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import InspireImagesTab from './WebContentMgmt/InspireImagesTab';
 import FeatureCardsTab from './WebContentMgmt/FeatureCardsTab';
 import QuotesSloganTab from './WebContentMgmt/QuotesSloganTab';
 import RolePanelsTab from './WebContentMgmt/RolePanelsTab';
 import CourseCategoriesTab from './WebContentMgmt/CourseCategoriesTab';
+import BlogCategoriesTab from './WebContentMgmt/BlogCategoriesTab';
 import '../../../styles/admin/WebContentMgmt/WebContentMgmt.css';
 
 const TAB_ITEMS = [
@@ -13,6 +14,7 @@ const TAB_ITEMS = [
   { id: 'quotes', label: 'Trích dẫn & Slogan' },
   { id: 'role-panels', label: 'Công cụ Vai trò' },
   { id: 'categories', label: 'Thể loại Khóa học' },
+  { id: 'blog-categories', label: 'Thể loại Blog' },
 ];
 
 const TAB_COMPONENTS = {
@@ -21,6 +23,7 @@ const TAB_COMPONENTS = {
   quotes: QuotesSloganTab,
   'role-panels': RolePanelsTab,
   categories: CourseCategoriesTab,
+  'blog-categories': BlogCategoriesTab,
 };
 
 const WebContentMgmt = () => {

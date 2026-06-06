@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import '../../../../styles/admin/WebContentMgmt/RolePanelsTab.css';
 
 const DEFAULT_ROLES = {

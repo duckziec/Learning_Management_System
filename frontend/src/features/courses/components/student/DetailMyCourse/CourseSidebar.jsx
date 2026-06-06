@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import '../../../styles/student/DetailMyCourse/CourseSidebar.css';
 
 const SidebarItem = ({ item, level = 0, activeLessonId, onLessonClick }) => {

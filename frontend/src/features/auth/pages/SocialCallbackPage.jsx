@@ -14,7 +14,7 @@
  *   4c. Error                             -> show message + "Back to login" button
  */
 
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/AuthPage.css';
 import '../styles/AuthForm.css';

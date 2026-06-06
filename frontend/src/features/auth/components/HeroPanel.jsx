@@ -4,6 +4,7 @@
 // Không nhận props - chỉ hiển thị
 // ==================================
 
+import React from 'react';
 import "../styles/HeroPanel.css";
 import imgLogin from '../../../assets/auth/anhLogin.png';
 import imgSignUp from '../../../assets/auth/anhSignUp.png';

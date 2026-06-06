@@ -1,3 +1,4 @@
+import React from 'react';
 import {motion} from 'framer-motion';
 import AdminHomeStats from '../../components/admin/Home/AdminHomeStats';
 import MicroservicesStatus from '../../components/admin/Home/MicroservicesStatus';

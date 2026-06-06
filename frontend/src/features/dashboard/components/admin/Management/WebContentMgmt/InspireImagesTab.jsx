@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import '../../../../styles/admin/WebContentMgmt/InspireImagesTab.css';
 
 const DEFAULT_IMAGES = [

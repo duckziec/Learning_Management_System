@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import "../../../styles/student/ListCourse/Search.css";
 
 export default function Search({ onSearch }) {

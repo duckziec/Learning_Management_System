@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { assignmentApi } from '../../../../../services/assignment.api';
 import courseApi from '../../../../../services/course.api';
@@ -17,6 +17,7 @@ import {
   stripPendingQuestionImage,
   uploadPendingQuestionImages,
 } from '../../utils/questionImageUpload';
+import { distributeQuizQuestionScores } from '../../utils/quizScoring';
 import '../../styles/teacher/ManualQuiz/manualQuizPage.css';
 
 function normalizeOptionsForType(type, options) {

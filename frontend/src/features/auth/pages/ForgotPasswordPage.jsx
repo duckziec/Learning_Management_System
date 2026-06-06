@@ -1,3 +1,4 @@
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../styles/AuthPage.css';
 import ForgotPassword from '../components/ForgotPassword';

@@ -1,17 +1,10 @@
-import { useState } from 'react';
+import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { courseApi } from "../../../../../services/course.api";
 import useAuth from "../../../../../hooks/useAuth";
 import "../../../styles/student/DetailCourse/CourseStickySidebar.css";
 
-export default function CourseStickySidebar({
-    course,
-    courseId,
-    isEnrolled,
-    previewMode = false,
-    backPath = "/list-course",
-    backLabel = "Quay lại danh sách",
-}) {
+export default function CourseStickySidebar({ course, courseId, isEnrolled, adminPreview = false, backPath = "/list-course" }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { isAuthenticated } = useAuth();
@@ -103,7 +96,7 @@ export default function CourseStickySidebar({
                     )}
 
                     <div className="course-sidebar__actions">
-                        {!previewMode && (isEnrolled ? (
+                        {!adminPreview && (isEnrolled ? (
                             <button
                                 className="course-sidebar__btn course-sidebar__btn--primary"
                                 onClick={handleContinue}
@@ -124,11 +117,11 @@ export default function CourseStickySidebar({
                             className="course-sidebar__btn course-sidebar__btn--secondary"
                             onClick={() => navigate(backPath)}
                         >
-                            {backLabel}
+                            Quay lại danh sách
                         </button>
                     </div>
 
-                    {!previewMode && enrollError && (
+                    {!adminPreview && enrollError && (
                         <p className="course-sidebar__error">{enrollError}</p>
                     )}
 
