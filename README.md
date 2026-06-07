@@ -9,6 +9,8 @@ quản lý nội dung học tập, tạo bài kiểm tra, bài lập trình và 
 học viên. Quản trị viên có thể quản lý người dùng, khóa học, blog, nội dung hệ
 thống và trạng thái các service.
 
+Truy cập: https://lmsystem.cloud để trải nghiệm ngay!
+
 ## Kiến Trúc Hệ Thống
 
 Project được tổ chức theo mô hình monorepo:
