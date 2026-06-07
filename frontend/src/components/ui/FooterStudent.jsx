@@ -119,7 +119,7 @@ export default function Footer({role = "student"}) {
 
                 {/* Bottom legal section */}
                 <div className="footer__bottom">
-                    <p className="footer__copyright">© {new Date().getFullYear()} HVP LMS Inc. Bảo lưu mọi
+                    <p className="footer__copyright">© {new Date().getFullYear()} HPVN LMS Inc. Bảo lưu mọi
                         quyền.</p>
                     <div className="footer__legal">
                         <a href="#">Chính sách bảo mật</a>

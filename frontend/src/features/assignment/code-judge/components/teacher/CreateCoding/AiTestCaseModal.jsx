@@ -15,7 +15,7 @@ function normalizeGeneratedCase(item, index) {
         id: `ai-${Date.now()}-${index}`,
         input: item.input ?? '',
         output: item.expectedOutput ?? item.output ?? '',
-        hidden: item.hidden ?? item.isHidden ?? true,
+        hidden: true,
         orderIndex: item.orderIndex ?? index,
         scoreWeight: item.scoreWeight ?? 1,
         description: item.description ?? '',

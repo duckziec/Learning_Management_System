@@ -2,6 +2,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate, useParams, useLocation } from 'react-router-dom';
 import blogApi from '../../../../services/blog.api';
 import { mapBlogTagToCategory, unwrapApiData } from '../../../../utils/blogMappers';
+import {
+  BLOG_THUMBNAIL_MAX_BYTES,
+  IMAGE_UPLOAD_ACCEPT,
+  validateImageUpload,
+} from '../../../../utils/imageUploadValidation';
 import AnimatedPage from '../../../../components/ui/AnimatedPage';
 import LockedFeature from '../../../../components/ui/LockedFeature';
 
@@ -23,6 +28,7 @@ export default function EditBlogPostPage() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [imageError, setImageError] = useState('');
   const editorRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -78,18 +84,27 @@ export default function EditBlogPostPage() {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const isImage = file.type.startsWith('image/');
+      const validationError = validateImageUpload(file, {
+        maxBytes: BLOG_THUMBNAIL_MAX_BYTES,
+        label: 'Ảnh đại diện bài viết',
+      });
+
+      if (validationError) {
+        setImageError(validationError);
+        if (fileInputRef.current) fileInputRef.current.value = '';
+        return;
+      }
+
+      setImageError('');
       setSelectedFile({ file, name: file.name, type: file.type, size: (file.size / 1024 / 1024).toFixed(2) });
-      if (isImage) {
-        const reader = new FileReader();
-        reader.onloadend = () => setPreviewImage(reader.result);
-        reader.readAsDataURL(file);
-      } else setPreviewImage(null);
+      const reader = new FileReader();
+      reader.onloadend = () => setPreviewImage(reader.result);
+      reader.readAsDataURL(file);
     }
   };
 
-  const triggerUpload = () => fileInputRef.current.click();
-  const clearSelectedFile = () => { setSelectedFile(null); setPreviewImage(null); if (fileInputRef.current) fileInputRef.current.value = ''; };
+  const triggerUpload = () => fileInputRef.current?.click();
+  const clearSelectedFile = () => { setSelectedFile(null); setPreviewImage(null); setImageError(''); if (fileInputRef.current) fileInputRef.current.value = ''; };
 
   const submitPost = async (status) => {
     setError('');
@@ -171,8 +186,8 @@ export default function EditBlogPostPage() {
 
               <div className="form-group">
                 <label className="form-label">Ảnh đại diện bài viết</label>
-                <input type="file" ref={fileInputRef} className="hidden-input" accept="image/*" onChange={handleFileChange} />
-                <div className="upload-area" onClick={triggerUpload}>
+                <input type="file" ref={fileInputRef} className="hidden-input" accept={IMAGE_UPLOAD_ACCEPT} onChange={handleFileChange} />
+                <div className={`upload-area${imageError ? ' upload-area--error' : ''}`} onClick={triggerUpload}>
                   {(selectedFile || previewImage) ? (
                     <div className="upload-preview">
                       {(previewImage) ? (
@@ -193,10 +208,15 @@ export default function EditBlogPostPage() {
                     <>
                       <span className="material-symbols-outlined upload-icon">upload_file</span>
                       <p className="upload-text"><span>Tải lên ảnh đại diện</span></p>
-                      <p className="upload-hint">Tối đa 10MB</p>
+                      <p className="upload-hint">JPG, PNG, GIF, WebP, BMP, SVG, tối đa 5MB</p>
                     </>
                   )}
                 </div>
+                {imageError && (
+                  <p className="upload-error-message" role="alert">
+                    {imageError}
+                  </p>
+                )}
               </div>
 
               <div className="form-group">

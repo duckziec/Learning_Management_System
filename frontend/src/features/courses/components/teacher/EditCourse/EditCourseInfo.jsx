@@ -1,6 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faLightbulb, faPlus, faTrash, faSearch, faTimes, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import {
+    COURSE_THUMBNAIL_MAX_BYTES,
+    IMAGE_UPLOAD_ACCEPT,
+    validateImageUpload,
+} from '../../../../../utils/imageUploadValidation';
 import '../../../styles/teacher/EditCourse/editCourseInfo.css';
 
 const LEVEL_CONFIG = {
@@ -116,8 +121,9 @@ const CategorySelect = ({ categories, selectedIds, onChange }) => {
 };
 
 /* ── Main component ── */
-const EditCourseInfo = ({ data, updateData, categories, errors = {} }) => {
+const EditCourseInfo = ({ data, updateData, categories, errors = {}, requireLearningPoints = false }) => {
     const fileInputRef = useRef(null);
+    const [thumbnailError, setThumbnailError] = useState('');
 
     const thumbnailPreview = data.thumbnailFile
         ? URL.createObjectURL(data.thumbnailFile)
@@ -125,13 +131,40 @@ const EditCourseInfo = ({ data, updateData, categories, errors = {} }) => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file) updateData({ thumbnailFile: file });
+        if (!file) return;
+
+        const validationError = validateImageUpload(file, {
+            maxBytes: COURSE_THUMBNAIL_MAX_BYTES,
+            label: 'Ảnh đại diện khóa học',
+        });
+
+        if (validationError) {
+            setThumbnailError(validationError);
+            if (fileInputRef.current) fileInputRef.current.value = '';
+            return;
+        }
+
+        setThumbnailError('');
+        updateData({ thumbnailFile: file });
     };
 
     const handleDrop = (e) => {
         e.preventDefault();
         const file = e.dataTransfer.files[0];
-        if (file) updateData({ thumbnailFile: file });
+        if (!file) return;
+
+        const validationError = validateImageUpload(file, {
+            maxBytes: COURSE_THUMBNAIL_MAX_BYTES,
+            label: 'Ảnh đại diện khóa học',
+        });
+
+        if (validationError) {
+            setThumbnailError(validationError);
+            return;
+        }
+
+        setThumbnailError('');
+        updateData({ thumbnailFile: file });
     };
 
     const updateListItem = (field, index, value) => {
@@ -202,7 +235,7 @@ const EditCourseInfo = ({ data, updateData, categories, errors = {} }) => {
                 <input
                     ref={fileInputRef}
                     type="file"
-                    accept="image/png,image/jpeg"
+                    accept={IMAGE_UPLOAD_ACCEPT}
                     style={{ display: 'none' }}
                     onChange={handleFileChange}
                 />
@@ -219,15 +252,20 @@ const EditCourseInfo = ({ data, updateData, categories, errors = {} }) => {
                     </div>
                 ) : (
                     <div
-                        className="upload-thumbnail-area"
+                        className={`upload-thumbnail-area${thumbnailError ? ' upload-thumbnail-area--error' : ''}`}
                         onClick={() => fileInputRef.current?.click()}
                         onDrop={handleDrop}
                         onDragOver={(e) => e.preventDefault()}
                     >
                         <FontAwesomeIcon icon={faImage} className="upload-icon" />
                         <p><span className="upload-link">Chọn ảnh từ máy</span> hoặc kéo và thả</p>
-                        <p className="upload-hint">PNG, JPG, tối đa 10MB</p>
+                        <p className="upload-hint">JPG, PNG, GIF, WebP, BMP, SVG, tối đa 10MB</p>
                     </div>
+                )}
+                {thumbnailError && (
+                    <span className="field-error-msg thumbnail-upload-error" role="alert">
+                        {thumbnailError}
+                    </span>
                 )}
             </div>
 
@@ -243,7 +281,10 @@ const EditCourseInfo = ({ data, updateData, categories, errors = {} }) => {
 
             {/* Learning Points */}
             <div className="form-field">
-                <label>Mục tiêu học viên đạt được</label>
+                <label>
+                    Mục tiêu học viên đạt được
+                    {requireLearningPoints && <span className="field-required">*</span>}
+                </label>
                 <div className="list-editor">
                     {(data.learningPoints || []).map((point, idx) => (
                         <div key={idx} className="list-editor-item">
@@ -266,6 +307,7 @@ const EditCourseInfo = ({ data, updateData, categories, errors = {} }) => {
                         <FontAwesomeIcon icon={faPlus} /> Thêm mục tiêu
                     </button>
                 </div>
+                {errors.learningPoints && <span className="field-error-msg">{errors.learningPoints}</span>}
             </div>
 
             {/* Requirements */}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Navigate, useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useProblemContext } from '../../../../../context/ProblemContext';
 import { assignmentApi } from '../../../../../services/assignment.api';
 import { courseApi } from '../../../../../services/course.api';
 import { mapProblemToCodeChallenge } from '../../../../../utils/assignmentMappers';
@@ -38,10 +39,10 @@ function normalizeEditorLanguage(language) {
 
 function mapSubmissionHistoryRows(response) {
   const submissions = Array.isArray(response?.content)
-    ? response.content
-    : Array.isArray(response)
-      ? response
-      : [];
+      ? response.content
+      : Array.isArray(response)
+          ? response
+          : [];
 
   return submissions.map((submission, index) => ({
     key: submission.submissionId || `${submission.submittedAt || 'submission'}-${index}`,
@@ -66,6 +67,7 @@ export default function ExerciseCodePage() {
   const navigate = useNavigate();
   const location = useLocation();
   const toast = useToast();
+  const { setProblemId } = useProblemContext() ?? {};
   const routeValue = legacyId || slugOrId;
   const isLegacyIdRoute = !!legacyId || NUMERIC_ID_PATTERN.test(slugOrId || '');
   const stateCourseTitle = location.state?.courseTitle || '';
@@ -100,8 +102,8 @@ export default function ExerciseCodePage() {
       try {
         setLoading(true);
         const problem = isLegacyIdRoute
-          ? await assignmentApi.getProblemDetail(Number(routeValue))
-          : await assignmentApi.getProblemDetailBySlug(routeValue);
+            ? await assignmentApi.getProblemDetail(Number(routeValue))
+            : await assignmentApi.getProblemDetailBySlug(routeValue);
 
         if (cancelled) return;
         const mapped = mapProblemToCodeChallenge(problem);
@@ -130,8 +132,8 @@ export default function ExerciseCodePage() {
         let editorCode = mapped.initialCode || getBoilerplateCode(DEFAULT_LANGUAGE);
         try {
           const latestAccepted = mapped.id
-            ? await assignmentApi.getLatestAcceptedSubmission(mapped.id)
-            : null;
+              ? await assignmentApi.getLatestAcceptedSubmission(mapped.id)
+              : null;
           if (!cancelled && latestAccepted?.sourceCode) {
             editorLanguage = normalizeEditorLanguage(latestAccepted.language);
             editorCode = latestAccepted.sourceCode;
@@ -154,10 +156,10 @@ export default function ExerciseCodePage() {
       } catch (err) {
         if (!cancelled) {
           setError(
-            buildAppErrorState(err, {
-              title: 'Không thể tải bài tập',
-              fallbackPath: stateCourseSlug ? `/exercises/code/${stateCourseSlug}?tab=coding` : '/exercises',
-            }),
+              buildAppErrorState(err, {
+                title: 'Không thể tải bài tập',
+                fallbackPath: stateCourseSlug ? `/exercises/code/${stateCourseSlug}?tab=coding` : '/exercises',
+              }),
           );
         }
       } finally {
@@ -169,6 +171,15 @@ export default function ExerciseCodePage() {
       cancelled = true;
     };
   }, [isLegacyIdRoute, navigate, routeValue, stateCourseSlug, stateCourseTitle]);
+
+  useEffect(() => {
+    if (challenge?.id && setProblemId) {
+      setProblemId(challenge.id);
+    }
+    return () => {
+      if (setProblemId) setProblemId(null);
+    };
+  }, [challenge?.id, setProblemId]);
 
   useEffect(() => {
     if (!challenge?.id) return undefined;
@@ -218,14 +229,14 @@ export default function ExerciseCodePage() {
   }, []);
 
   const handleLanguageChange = useCallback(
-    (newLang) => {
-      if (newLang === language) return;
-      setLanguage(newLang);
-      if (!isCodeDirty) {
-        setCode(getBoilerplateCode(newLang));
-      }
-    },
-    [isCodeDirty, language],
+      (newLang) => {
+        if (newLang === language) return;
+        setLanguage(newLang);
+        if (!isCodeDirty) {
+          setCode(getBoilerplateCode(newLang));
+        }
+      },
+      [isCodeDirty, language],
   );
 
   const handleSubmissionSelect = useCallback(async (submissionId) => {
@@ -305,8 +316,8 @@ export default function ExerciseCodePage() {
       }
 
       const resultBasePath = challenge.slug
-        ? `/exercises/challenge/${challenge.slug}/result`
-        : `/exercises/challenge/${challenge.id}/result`;
+          ? `/exercises/challenge/${challenge.slug}/result`
+          : `/exercises/challenge/${challenge.id}/result`;
       const resultPath = `${resultBasePath}?submissionId=${encodeURIComponent(submission.submissionId)}`;
 
       navigate(resultPath, {
@@ -321,7 +332,7 @@ export default function ExerciseCodePage() {
       const compileError = getCompileErrorFromResponse(err);
       if (err.response?.data?.code === 3313 || compileError) {
         setRunResult({
-          status: 'COMPILATION_ERROR',
+          status: 'CE',
           allPassed: false,
           score: 0,
           compileError: compileError || err.response?.data?.message || 'Biên dịch thất bại.',
@@ -341,11 +352,11 @@ export default function ExerciseCodePage() {
 
   if (loading) {
     return (
-      <AnimatedPage>
-        <div className="exercise-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
-          <p style={{ color: '#64748b' }}>Đang tải bài tập...</p>
-        </div>
-      </AnimatedPage>
+        <AnimatedPage>
+          <div className="exercise-page" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '60vh' }}>
+            <p style={{ color: '#64748b' }}>Đang tải bài tập...</p>
+          </div>
+        </AnimatedPage>
     );
   }
 
@@ -356,44 +367,44 @@ export default function ExerciseCodePage() {
   if (!challenge) return null;
 
   return (
-    <AnimatedPage>
-      <div className="exercise-detail-container">
-        <div className="exercise-detail-top">
-          <ExerciseBreadcrumb
-            items={[
-              ...(courseContext.title
-                ? [{ label: courseContext.title, link: courseContext.slug ? `/exercises/code/${courseContext.slug}?tab=coding` : '/exercises' }]
-                : []),
-              { label: challenge.title },
-            ]}
-          />
-          <ExerciseHeader challenge={challenge} />
-        </div>
+      <AnimatedPage>
+        <div className="exercise-detail-container">
+          <div className="exercise-detail-top">
+            <ExerciseBreadcrumb
+                items={[
+                  ...(courseContext.title
+                      ? [{ label: courseContext.title, link: courseContext.slug ? `/exercises/code/${courseContext.slug}?tab=coding` : '/exercises' }]
+                      : []),
+                  { label: challenge.title },
+                ]}
+            />
+            <ExerciseHeader challenge={challenge} />
+          </div>
 
-        <div className="exercise-workspace">
-          <ProblemPanel
-            activeTab={activeTab}
-            setActiveTab={setActiveTab}
-            challenge={challenge}
-            submissionHistory={submissionHistory}
-            onSubmissionSelect={handleSubmissionSelect}
-            loadingSubmissionId={loadingSubmissionId}
-          />
-          <EditorPanel
-            code={code}
-            setCode={handleCodeChange}
-            language={language}
-            onLanguageChange={handleLanguageChange}
-            isRunning={isRunning}
-            isSubmitting={isSubmitting}
-            showResults={showResults}
-            runResult={runResult}
-            runError={runError}
-            handleRunCode={handleRunCode}
-            handleSubmitSolution={handleSubmitSolution}
-          />
+          <div className="exercise-workspace">
+            <ProblemPanel
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                challenge={challenge}
+                submissionHistory={submissionHistory}
+                onSubmissionSelect={handleSubmissionSelect}
+                loadingSubmissionId={loadingSubmissionId}
+            />
+            <EditorPanel
+                code={code}
+                setCode={handleCodeChange}
+                language={language}
+                onLanguageChange={handleLanguageChange}
+                isRunning={isRunning}
+                isSubmitting={isSubmitting}
+                showResults={showResults}
+                runResult={runResult}
+                runError={runError}
+                handleRunCode={handleRunCode}
+                handleSubmitSolution={handleSubmitSolution}
+            />
+          </div>
         </div>
-      </div>
-    </AnimatedPage>
+      </AnimatedPage>
   );
 }

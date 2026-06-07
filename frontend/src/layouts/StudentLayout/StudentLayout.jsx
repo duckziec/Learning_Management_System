@@ -4,16 +4,17 @@ import HeaderStudent from '../../components/ui/HeaderStudent';
 import FooterStudent from '../../components/ui/FooterStudent';
 import ChatBot from '../../components/ui/ChatBot';
 import PageLoader from '../../components/ui/PageLoader';
+import { ProblemProvider } from '../../context/ProblemContext';
 
 // Các trang không hiện chatbot
 const NO_CHATBOT_ROUTES = ['/', '/home', '/dashboard'];
 const NO_CHATBOT_PREFIXES = ['/blog', '/'];
 
 function useShouldShowChatbot() {
-  const { pathname } = useLocation();
-  if (NO_CHATBOT_ROUTES.includes(pathname)) return false;
-  if (pathname.startsWith('/blog')) return false;
-  return true;
+    const { pathname } = useLocation();
+    if (NO_CHATBOT_ROUTES.includes(pathname)) return false;
+    if (pathname.startsWith('/blog')) return false;
+    return true;
 }
 
 // =============================================
@@ -21,20 +22,22 @@ function useShouldShowChatbot() {
 // =============================================
 
 function StudentLayout() {
-  const showChatbot = useShouldShowChatbot();
+    const showChatbot = useShouldShowChatbot();
 
-  return (
-    <div className="student-layout">
-      <HeaderStudent />
-      <main className="student-main">
-        <Suspense fallback={<PageLoader />}>
-          <Outlet />
-        </Suspense>
-      </main>
-      <FooterStudent role="student" />
-      {showChatbot && <ChatBot />}
-    </div>
-  );
+    return (
+        <ProblemProvider>
+            <div className="student-layout">
+                <HeaderStudent />
+                <main className="student-main">
+                    <Suspense fallback={<PageLoader />}>
+                        <Outlet />
+                    </Suspense>
+                </main>
+                <FooterStudent role="student" />
+                {showChatbot && <ChatBot />}
+            </div>
+        </ProblemProvider>
+    );
 }
 
 export default StudentLayout;

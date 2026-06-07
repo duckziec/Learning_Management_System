@@ -13,6 +13,8 @@ function AdminLayout() {
 
     const getPageTitle = () => {
         const path = location.pathname;
+        if (/^\/admin\/all-courses\/[^/]+/.test(path)) return 'Xem khóa học';
+        if (/^\/admin\/blog\/[^/]+/.test(path)) return 'Xem bài viết';
         if (path.includes('/admin/home')) return 'Dashboard Tổng quan';
         if (path.includes('/admin/users')) return 'Quản lý Người dùng';
         if (path.includes('/admin/all-courses')) return 'Quản trị Khóa học';

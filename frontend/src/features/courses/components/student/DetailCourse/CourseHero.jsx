@@ -1,12 +1,13 @@
 import { Link } from "react-router-dom";
 import "../../../styles/student/DetailCourse/CourseHero.css";
 
-export default function CourseHero({ course }) {
+export default function CourseHero({ course, showBreadcrumb = true }) {
     return (
         <section className="course-hero">
             <div className="course-hero__container">
                 <div className="course-hero__grid">
                     <div className="course-hero__content">
+                        {showBreadcrumb && (
                         <nav className="course-hero__breadcrumbs">
                             <Link className="course-hero__breadcrumb-link" to="/list-course">Danh sách khóa học</Link>
                             <span className="material-symbols-outlined text-xs">chevron_right</span>
@@ -14,6 +15,7 @@ export default function CourseHero({ course }) {
                                 {course?.title || "Chi tiết khóa học"}
                             </span>
                         </nav>
+                        )}
 
                         {course?.categories?.length > 0 && (
                             <div className="course-hero__categories">

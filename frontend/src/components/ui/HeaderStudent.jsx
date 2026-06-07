@@ -78,7 +78,7 @@ export default function Header() {
                         </Link>
                     </div>
                     <Link to={homeUrl}>
-                        <h2 className="header__title">HVP Learning</h2>
+                        <h2 className="header__title">HPVN Learning</h2>
                     </Link>
                 </div>
 

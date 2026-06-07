@@ -392,9 +392,7 @@ const CourseManagement = () => {
                       <Link
                         className="admin-btn"
                         style={{ padding: '5px 10px', fontSize: '0.75rem', textDecoration: 'none' }}
-                        to={`/list-course/detail-course/${course.id}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        to={`/admin/all-courses/${course.id}`}
                       >
                         <i className="ti ti-eye"></i>
                         Xem

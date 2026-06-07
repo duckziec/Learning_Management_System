@@ -4,7 +4,7 @@ import { courseApi } from "../../../../../services/course.api";
 import useAuth from "../../../../../hooks/useAuth";
 import "../../../styles/student/DetailCourse/CourseStickySidebar.css";
 
-export default function CourseStickySidebar({ course, courseId, isEnrolled }) {
+export default function CourseStickySidebar({ course, courseId, isEnrolled, adminPreview = false, backPath = "/list-course" }) {
     const navigate = useNavigate();
     const location = useLocation();
     const { isAuthenticated } = useAuth();
@@ -96,7 +96,7 @@ export default function CourseStickySidebar({ course, courseId, isEnrolled }) {
                     )}
 
                     <div className="course-sidebar__actions">
-                        {isEnrolled ? (
+                        {!adminPreview && (isEnrolled ? (
                             <button
                                 className="course-sidebar__btn course-sidebar__btn--primary"
                                 onClick={handleContinue}
@@ -112,16 +112,16 @@ export default function CourseStickySidebar({ course, courseId, isEnrolled }) {
                             >
                                 {enrolling ? "Đang đăng ký..." : "Đăng ký ngay"}
                             </button>
-                        )}
+                        ))}
                         <button
                             className="course-sidebar__btn course-sidebar__btn--secondary"
-                            onClick={() => navigate("/list-course")}
+                            onClick={() => navigate(backPath)}
                         >
                             Quay lại danh sách
                         </button>
                     </div>
 
-                    {enrollError && (
+                    {!adminPreview && enrollError && (
                         <p className="course-sidebar__error">{enrollError}</p>
                     )}
 

@@ -1,14 +1,14 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye, faUserPlus, faExclamationTriangle } from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import {faExclamationTriangle, faEye, faUserPlus} from '@fortawesome/free-solid-svg-icons';
 import '../../../styles/teacher/EditCourse/editSettings.css';
 
-const EditSettings = ({ data, updateData, onDelete }) => {
+const EditSettings = ({data, updateData, onDelete}) => {
     return (
         <div className="edit-settings-container">
             <div className="settings-section">
                 <div className="section-header">
-                    <FontAwesomeIcon icon={faEye} className="section-icon text-blue" />
+                    <FontAwesomeIcon icon={faEye} className="section-icon text-blue"/>
                     <h3>Hiển thị và trạng thái</h3>
                 </div>
                 <div className="radio-group">
@@ -19,13 +19,14 @@ const EditSettings = ({ data, updateData, onDelete }) => {
                                 name="status"
                                 value="PUBLIC"
                                 checked={data.status === 'PUBLIC'}
-                                onChange={() => updateData({ status: 'PUBLIC' })}
+                                onChange={() => updateData({status: 'PUBLIC'})}
                             />
                             <span className="custom-radio"></span>
                         </div>
                         <div className="radio-text">
                             <h4>Công khai</h4>
-                            <p>Bất kỳ ai cũng có thể tìm thấy và đăng ký khóa học này. Nó sẽ xuất hiện trong kết quả tìm kiếm.</p>
+                            <p>Bất kỳ ai cũng có thể tìm thấy và đăng ký khóa học này. Nó sẽ xuất hiện trong kết quả tìm
+                                kiếm.</p>
                         </div>
                     </label>
 
@@ -36,7 +37,7 @@ const EditSettings = ({ data, updateData, onDelete }) => {
                                 name="status"
                                 value="PRIVATE"
                                 checked={data.status === 'PRIVATE'}
-                                onChange={() => updateData({ status: 'PRIVATE' })}
+                                onChange={() => updateData({status: 'PRIVATE'})}
                             />
                             <span className="custom-radio"></span>
                         </div>
@@ -50,17 +51,18 @@ const EditSettings = ({ data, updateData, onDelete }) => {
 
             <div className="settings-section">
                 <div className="section-header">
-                    <FontAwesomeIcon icon={faUserPlus} className="section-icon text-blue" />
+                    <FontAwesomeIcon icon={faUserPlus} className="section-icon text-blue"/>
                     <h3>Chuyển quyền sở hữu</h3>
                 </div>
                 <div className="transfer-box">
-                    <p>Chuyển khóa học này sang tài khoản của giáo viên khác. Thao tác này không thể hoàn tác sau khi được chấp nhận.</p>
+                    <p>Chuyển khóa học này sang tài khoản của giáo viên khác. Thao tác này không thể hoàn tác sau khi
+                        được chấp nhận.</p>
                     <div className="transfer-input-group">
                         <input
                             type="email"
                             placeholder="Địa chỉ email của chủ sở hữu mới"
                             value={data.transferEmail || ''}
-                            onChange={(e) => updateData({ transferEmail: e.target.value })}
+                            onChange={(e) => updateData({transferEmail: e.target.value})}
                         />
                         <button type="button" className="btn-transfer">Khởi tạo chuyển giao</button>
                     </div>
@@ -69,7 +71,7 @@ const EditSettings = ({ data, updateData, onDelete }) => {
 
             <div className="settings-section danger-zone-section">
                 <div className="section-header danger-header">
-                    <FontAwesomeIcon icon={faExclamationTriangle} className="section-icon text-red" />
+                    <FontAwesomeIcon icon={faExclamationTriangle} className="section-icon text-red"/>
                     <h3 className="text-red">Khu vực nguy hiểm</h3>
                 </div>
                 <div className="danger-box">

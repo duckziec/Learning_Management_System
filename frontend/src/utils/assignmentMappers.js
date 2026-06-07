@@ -265,7 +265,7 @@ export function mapAttemptToResultRow(attempt, quizTitle, studentName) {
  * Map submission + problem → coding result row
  */
 export function mapSubmissionToResultRow(submission, problemTitle, studentName) {
-  const isAccepted = submission.status === 'ACCEPTED';
+  const isAccepted = submission.status === 'AC' || submission.status === 'ACCEPTED';
   return {
     id: submission.submissionId,
     student: studentName || `User ${submission.userId}`,

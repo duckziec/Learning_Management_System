@@ -180,9 +180,11 @@ function AppRoutes() {
                                 <Route path="/admin/home" element={<AdminHome/>}/>
                                 <Route path="/admin/users" element={<UserMgmt/>}/>
                                 <Route path="/admin/all-courses" element={<AdminCourseMgmt/>}/>
+                                <Route path="/admin/all-courses/:courseId" element={<DetailCoursePage adminPreview/>}/>
                                 <Route path="/admin/web-content" element={<WebContentMgmt/>}/>
                                 <Route path="/admin/judge" element={<CodeJudgeMgmt/>}/>
                                 <Route path="/admin/blog" element={<BlogMgmt/>}/>
+                                <Route path="/admin/blog/:id" element={<BlogDetailPage adminPreview/>}/>
                                 <Route path="/admin/settings" element={<SettingsPage/>}/>
                                 <Route path="/admin/error" element={<AppErrorPage/>}/>
                             </Route>

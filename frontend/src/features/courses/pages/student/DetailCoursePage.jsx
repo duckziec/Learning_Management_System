@@ -57,7 +57,7 @@ function buildSections(nodes) {
     return buildTree(null);
 }
 
-export default function DetailCoursePage() {
+export default function DetailCoursePage({ adminPreview = false }) {
     const { courseId } = useParams();
     const location = useLocation();
     const navigate = useNavigate();
@@ -82,7 +82,7 @@ export default function DetailCoursePage() {
                 message: "Liên kết khóa học không hợp lệ hoặc nội dung không còn tồn tại.",
                 variant: "not-found",
                 icon: "travel_explore",
-                fallbackPath: "/list-course",
+                fallbackPath: adminPreview ? "/admin/all-courses" : "/list-course",
             }));
             setIsLoading(false);
             return;
@@ -101,7 +101,7 @@ export default function DetailCoursePage() {
                         console.error("getStructure:", err?.response?.status, err?.response?.data);
                         return null;
                     }),
-                    isAuthenticated ? courseApi.getEnrolled().catch(() => []) : Promise.resolve([]),
+                    isAuthenticated && !adminPreview ? courseApi.getEnrolled().catch(() => []) : Promise.resolve([]),
                 ]);
 
                 const raw = courseRes?.data?.data ?? courseRes?.data;
@@ -119,7 +119,7 @@ export default function DetailCoursePage() {
                 console.error("Failed to fetch course detail:", err);
                 setBlockingError(buildAppErrorState(err, {
                     title: "Không thể tải thông tin khóa học",
-                    fallbackPath: "/list-course",
+                    fallbackPath: adminPreview ? "/admin/all-courses" : "/list-course",
                 }));
             } finally {
                 setIsLoading(false);
@@ -127,7 +127,7 @@ export default function DetailCoursePage() {
         };
 
         fetchAll();
-    }, [courseId, isAuthenticated]);
+    }, [adminPreview, courseId, isAuthenticated]);
 
     if (blockingError) {
         return <Navigate to={getAppErrorRoute(location.pathname)} replace state={blockingError} />;
@@ -177,7 +177,7 @@ export default function DetailCoursePage() {
     return (
         <AnimatedPage>
             <div className="detail-course-page">
-                <CourseHero course={courseData} />
+                <CourseHero course={courseData} showBreadcrumb={!adminPreview} />
 
                 <div className="detail-course-page__container">
                     <div className="detail-course-page__layout">
@@ -186,7 +186,7 @@ export default function DetailCoursePage() {
                             <ChaptersList
                                 chapters={sections}
                                 totalLessons={countLessonsInTree(sections)}
-                                onLessonClick={isEnrolled
+                                onLessonClick={!adminPreview && isEnrolled
                                     ? (lesson) => navigate("/course-hub", {
                                         state: {
                                             courseId,
@@ -206,6 +206,8 @@ export default function DetailCoursePage() {
                             course={courseData}
                             courseId={courseId}
                             isEnrolled={isEnrolled}
+                            adminPreview={adminPreview}
+                            backPath={adminPreview ? "/admin/all-courses" : "/list-course"}
                         />
                     </div>
                 </div>

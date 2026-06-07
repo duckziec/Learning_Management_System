@@ -347,6 +347,12 @@
     flex-shrink: 0;
 }
 
+.upload-error-text {
+    flex: 1;
+    min-width: 0;
+    line-height: 1.35;
+}
+
 /* Shared remove / retry buttons */
 .upload-remove-btn {
     background: none;
